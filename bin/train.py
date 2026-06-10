@@ -7,7 +7,6 @@ from typing import List, Optional, Dict, Any
 import torch
 import torch.nn.functional as F
 import transformers
-from torch import nn
 from transformers import (
     AutoTokenizer,
     HfArgumentParser,
@@ -17,10 +16,7 @@ from transformers import (
 
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 
-# TODO: 改成你的 MiMo 文件名
-# 例如你的第一个代码文件如果叫 model/mimo.py，就写：
-# from model.mimo import MiMoAudioForCausalLM, MiMoAudioConfig, MiMoAudioArguments
-from mimo_model import MiMoAudioForCausalLM, MiMoAudioConfig, MiMoAudioArguments
+from model import MiMoAudioForCausalLM, MiMoAudioArguments
 
 # TODO: 换成你的 MiMo 数据集
 # 这个 dataset 应该返回 input_ids / labels / attention_mask
@@ -50,9 +46,6 @@ class DataArguments:
     annotation_dir: str = field(default="")
     token_root: str = field(default="")
     max_length: int = field(default=2048)
-
-    # MiMo 一般不是直接吃 wav，而是吃离散 speech token
-    # 如果你仍然从 wav 开始，需要在 dataset 里先用 codec/tokenizer 转成 speech token
     query: Optional[str] = field(default=None)
 
 

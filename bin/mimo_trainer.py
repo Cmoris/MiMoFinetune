@@ -1,9 +1,13 @@
-from typing import List, Optional, Dict, Any
+from typing import Dict
 
 import torch
+from torch.nn import functional as F
 
 from transformers import Trainer
 from transformers.modeling_outputs import BaseModelOutputWithPast
+
+from train import normalize_mimo_ids
+from model import MiMoAudioForCausalLM
 
 class MiMoTrainer(Trainer):
     """
