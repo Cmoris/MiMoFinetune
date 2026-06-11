@@ -108,6 +108,7 @@ class MiMoSampler:
 
 @dataclass
 class MiMoAudioOutput(ModelOutput):
+    loss: torch.FloatTensor | None = None
     text_logits: torch.FloatTensor | None = None
     local_hidden_states: torch.FloatTensor | None = None
     past_key_values: Cache | None = None
@@ -208,6 +209,7 @@ class MiMoAudioArguments:
     eostm_idx: int
     eot_idx: int
     empty_idx: int
+    speech_loss_weights: str
 
     def to_dict(self):
         return {
@@ -218,6 +220,7 @@ class MiMoAudioArguments:
             "eostm_idx": self.eostm_idx,
             "eot_idx": self.eot_idx,
             "empty_idx": self.empty_idx,
+            "speech_loss_weights": self.speech_loss_weights,
         }
 
 
@@ -248,11 +251,17 @@ class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
 
         self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
+        from torch.nn import CrossEntropyLoss
+        self.loss_fct = CrossEntropyLoss(ignore_index=-100, reduction="none")
         # Construct local transformer
         self.local_config = config.local_config()
         self.local_transformer = Qwen2Model(self.local_config)
         self.local_transformer.embed_tokens = None
-
+        self.empty_loss_weight = getattr(config, 'empty_loss_weight', 0.01)
+        self.text_speech_loss_weights = [float(i) for i in args.speech_loss_weights.split("-")]
+        self.text_speech_loss_total_weights = 0
+        for weight in self.text_speech_loss_weights:
+            self.text_speech_loss_total_weights += weight
         # Add input local transformer if configured
         self.input_local_config = config.input_local_config()
         self.input_local_transformer = Qwen2Model(self.input_local_config)
@@ -343,7 +352,7 @@ class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
             .view(B, self.audio_channels, -1, group_size)
             .transpose(1, 2)
         )  # [B, T//group_size, audio_channels, group_size]
-
+        
         is_speech = text_input_ids == self.args.empty_idx  # [B, T//group_size]
 
         speech_embeds = torch.zeros(
@@ -382,21 +391,93 @@ class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
 
         text_embeds: torch.Tensor = self.model.embed_tokens(text_input_ids)
         text_zero_mask = text_input_ids == self.args.empty_idx
-        text_embeds.masked_fill_(text_zero_mask.unsqueeze(-1), 0.0)
+        text_embeds.masked_fill(text_zero_mask.unsqueeze(-1), 0.0)
 
         return text_embeds + speech_grouped_embeds
 
+    def text_loss(self, text_logits: torch.Tensor, labels: torch.Tensor):
+        text_logits = text_logits[:, :-1, :].contiguous()
+        origin_labels = labels.clone()
+        labels = labels[:, 1:].contiguous()
+
+        item_loss = self.loss_fct(text_logits.view(-1, text_logits.size(-1)), labels.view(-1))
+        
+        empty_loss = item_loss[(labels.view(-1) == self.args.empty_idx) & (labels.view(-1) != self.loss_fct.ignore_index)].sum() * self.empty_loss_weight
+        text_loss = item_loss[(labels.view(-1) != self.args.empty_idx) & (labels.view(-1) != self.loss_fct.ignore_index)].sum()
+        
+        weighted_sum = ((labels.view(-1) == self.args.empty_idx) & (labels.view(-1) != self.loss_fct.ignore_index)).float() * self.empty_loss_weight + ((labels.view(-1) != self.args.empty_idx) & (labels.view(-1) != self.loss_fct.ignore_index)).float()
+        
+        speech_mask = (origin_labels == self.args.empty_idx) & (origin_labels != self.loss_fct.ignore_index)
+        return (text_loss + empty_loss) / (weighted_sum.sum() + 1e-8), speech_mask
+    
+    def speech_loss(self, local_hidden_states: torch.Tensor, labels: torch.Tensor, speech_mask: torch.Tensor, text_loss: torch.Tensor):
+        # bsz = labels.size(0)
+        # speech_mask: [B, T//group_size]
+        labels = labels.contiguous().view(labels.size(0), self.audio_channels, -1, self.group_size).transpose(1, 2)
+        labels = labels[speech_mask.unsqueeze(-1).unsqueeze(-1).expand_as(labels)].contiguous().view(-1, self.audio_channels, self.group_size) # [effective_length, audio_channels, group_size]
+
+        delayed_speech_embeddings = torch.zeros((labels.size(0), self.group_size + max(self.delay_pattern), self.config.local_dim), device=labels.device, dtype=self.speech_embeddings[0].weight.dtype)
+        for i in range(self.audio_channels):
+            start_idx = self.delay_pattern[i]
+            end_idx = start_idx + self.group_size
+            delayed_speech_emb = self.speech_embeddings[i](labels[:, i, :])
+
+            delayed_speech_embeddings[:, start_idx:end_idx, :] += delayed_speech_emb
+
+        # Apply speech_embeddings_to_local if configured
+        if self.speech_embeddings_to_local is not None:
+            delayed_speech_embeddings = self.speech_embeddings_to_local(
+                delayed_speech_embeddings
+            )
+
+        delayed_speech_embeddings = delayed_speech_embeddings[:, :-1, :]
+        embed_dim = local_hidden_states.size(-1)
+        bsz = local_hidden_states.size(0)
+        brefore_prefix = torch.zeros((bsz, 1), device=local_hidden_states.device).bool()
+        new_speech_mask = torch.cat([speech_mask, brefore_prefix], dim=1)[:, 1:]
+        local_hidden_states = local_hidden_states[new_speech_mask.unsqueeze(-1).expand_as(local_hidden_states)].contiguous().view(-1, embed_dim).unsqueeze(-2)
+        local_input_embs = torch.cat([local_hidden_states, delayed_speech_embeddings], dim=-2)
+        
+        local_seq_len = self.group_size + max(self.delay_pattern)
+        local_attention_mask = torch.tril(torch.ones(local_seq_len, local_seq_len)).unsqueeze(0).bool().to(local_hidden_states)
+        local_output = self.local_transformer(
+            inputs_embeds=local_input_embs,
+            return_dict=True,
+            attention_mask=local_attention_mask,
+        )
+
+        hidden_state = local_output.last_hidden_state
+        
+        audio_rvq_loss = text_loss * self.text_speech_loss_weights[0]
+        channel_losses = [text_loss]  # 用于记录每个channel的loss
+        
+        for idx in range(self.audio_channels):
+            cur_start = self.delay_pattern[idx]
+            cur_end = cur_start + self.group_size
+
+            cur_rvq_logits = self.local_transformer_lm_heads[idx](hidden_state[:, cur_start:cur_end, :])
+            cur_rvq_loss = self.loss_fct(cur_rvq_logits.view(-1, cur_rvq_logits.size(-1)), labels[:, idx, :].contiguous().view(-1)).sum()
+            cur_weighted_sum = labels[:, idx, :].size(0) * labels[:, idx, :].size(1)
+            channel_losses.append(cur_rvq_loss / cur_weighted_sum)
+            audio_rvq_loss += (cur_rvq_loss / cur_weighted_sum) * self.text_speech_loss_weights[idx + 1]
+        
+        total_weights = self.text_speech_loss_total_weights
+        audio_rvq_loss = audio_rvq_loss / (total_weights + 1e-8)
+        # print(channel_losses)
+        return audio_rvq_loss
+        
     def forward(
         self,
         input_ids: torch.LongTensor,  # [B, audio_channels + 1, new_T]
         attention_mask: torch.Tensor,  # [B, T_group]
-        position_ids: torch.LongTensor,  # [B, new_T_group]
+        position_ids: torch.LongTensor | None = None,  # [B, new_T_group]
         past_key_values: Cache | None = None,
         cache_position: torch.LongTensor | None = None,  # [new_T_group]
+        labels: torch.LongTensor | None = None, # [B, audio_channels + 1, new_T]
         **_kwargs,
     ):
         inputs_embeds = self._prepare_input_embeds(input_ids)
-
+        
         outputs: BaseModelOutputWithPast = self.model(
             attention_mask=attention_mask,
             position_ids=position_ids,
@@ -405,8 +486,27 @@ class MiMoAudioForCausalLM(Qwen2PreTrainedModel):
             use_cache=True,
             return_dict=True,
             cache_position=cache_position,
+            is_causal=True,
         )
         hidden_states = outputs.last_hidden_state  # [B, new_T_group, hidden_size]
+
+        if labels is not None:
+            text_logits = self.lm_head(hidden_states)
+            shift_hidden_states = self.hidden_states_downcast(hidden_states)
+            
+            text_loss, speech_mask = self.text_loss(text_logits, labels[:, 0, ::self.group_size])
+            
+            if getattr(self.config, "no_text_loss", False):
+                text_loss = torch.tensor(0.0, device=labels.device)
+            
+            if speech_mask.sum() > 0 and getattr(self.config, "no_speech_loss", False) == False:
+                final_loss = self.speech_loss(shift_hidden_states, labels[:, 1:, :], speech_mask, text_loss)
+            else:
+                final_loss = text_loss
+                
+            return MiMoAudioOutput(
+                loss=final_loss
+            )
 
         text_logits: torch.Tensor = self.lm_head(
             hidden_states[:, -1:, :]

@@ -2,13 +2,12 @@ import re
 import os
 import json
 import numpy as np
-from dataclasses import dataclass
-from typing import Union, Optional, Any, List, Dict
+from dataclasses import dataclass, field
+from typing import Union, Optional, Any, List, Dict, Tuple
 
 import torch
 import torchaudio
 from torch.utils.data import Dataset
-from torchcodec.decoders import AudioDecoder
 
 import transformers
 from transformers import logging
@@ -20,49 +19,106 @@ logger = logging.get_logger(__name__)
 
 DEFAULT_SAMPLE_RATE = 16000
 
-def read_audio(ele: dict):
-    audio_decoder = AudioDecoder(source=ele['audio'], sample_rate=DEFAULT_SAMPLE_RATE)
-    audio_sr = audio_decoder.metadata.sample_rate
-    audio_duration = audio_decoder.metadata.duration_seconds_from_header
-    total_frames = int(audio_duration*audio_sr)
-    audio_pts = np.linspace(1/audio_sr, audio_duration, total_frames)
-    audio_start = ele.get("audio_start", None)
-    audio_end = ele.get("audio_end", None)
-    clip_idxs = None
-    if audio_start is not None or audio_end is not None:
-        audio_start = audio_pts[0] if not audio_start else audio_start
-        audio_end = audio_pts[-1] if not audio_end else audio_end
-        clip_idxs = ((audio_start <= audio_pts) & (audio_pts <= audio_end)).nonzero()[0]
-        clip_pts = audio_pts[clip_idxs]
-        total_frames = len(clip_pts)
-    else:
-        audio_start = 0
+def read_audio(ele: dict) -> Tuple[torch.Tensor, torch.Tensor, int]:
+    """
+    使用 torchaudio 读取、裁剪并重采样音频。
+
+    Args:
+        ele:
+            {
+                "audio": "/path/to/audio.wav",
+                "audio_start": 1.2,  # 可选，单位为秒
+                "audio_end": 3.5,    # 可选，单位为秒
+            }
+
+    Returns:
+        clip:
+            重采样后的单通道音频，shape 为 [num_samples]。
+        clip_pts:
+            clip 中每个采样点对应的原始音频绝对时间，单位为秒，
+            shape 为 [num_samples]。
+        audio_sr:
+            原始音频采样率。
+    """
+    audio_path = ele["audio"]
+
+    info = torchaudio.info(audio_path)
+
+    audio_sr = info.sample_rate
+    total_source_frames = info.num_frames
+    audio_duration = total_source_frames / audio_sr
+
+    audio_start = ele.get("audio_start")
+    audio_end = ele.get("audio_end")
+
+    # 注意：不能用 `if not audio_start`，因为 0.0 是合法值
+    if audio_start is None:
+        audio_start = 0.0
+
+    if audio_end is None:
         audio_end = audio_duration
-        
-    nframes = int(total_frames/audio_sr*DEFAULT_SAMPLE_RATE)
-    nframes_idxs = np.linspace(0, total_frames - 1, nframes).round().astype(int)
-    clip_idxs = nframes_idxs if clip_idxs is None else clip_idxs[nframes_idxs]
-    clip_pts = audio_pts[clip_idxs]
-    clip = audio_decoder.get_samples_played_in_range(start_seconds=audio_start, stop_seconds=audio_end+1/DEFAULT_SAMPLE_RATE).data
 
-    return clip.squeeze(0), clip_pts, audio_sr
+    audio_start = max(0.0, float(audio_start))
+    audio_end = min(float(audio_end), audio_duration)
 
-def _read_last_line(path: str, buf: int = 4096) -> str:
+    if audio_end <= audio_start:
+        raise ValueError(
+            f"Invalid audio range: start={audio_start}, end={audio_end}, "
+            f"duration={audio_duration}"
+        )
+
+    # 采用左闭右开区间 [audio_start, audio_end)
+    frame_offset = int(round(audio_start * audio_sr))
+    end_frame = int(round(audio_end * audio_sr))
+
+    frame_offset = min(frame_offset, total_source_frames)
+    end_frame = min(end_frame, total_source_frames)
+
+    num_frames = max(0, end_frame - frame_offset)
+
+    waveform, loaded_sr = torchaudio.load(
+        audio_path,
+        frame_offset=frame_offset,
+        num_frames=num_frames,
+    )
+
+    if loaded_sr != audio_sr:
+        raise RuntimeError(
+            f"Unexpected sample rate: info={audio_sr}, loaded={loaded_sr}"
+        )
+
+    # 多通道音频转为单通道
+    if waveform.shape[0] > 1:
+        waveform = waveform.mean(dim=0, keepdim=True)
+
+    if audio_sr != DEFAULT_SAMPLE_RATE:
+        waveform = torchaudio.functional.resample(
+            waveform,
+            orig_freq=audio_sr,
+            new_freq=DEFAULT_SAMPLE_RATE,
+        )
+
+    clip = waveform.squeeze(0)
+
+    # 每个输出采样点对应的绝对音频时间
+    clip_pts = (
+        torch.arange(
+            clip.numel(),
+            device=clip.device,
+            dtype=torch.float64,
+        )
+        / DEFAULT_SAMPLE_RATE
+        + audio_start
+    )
+
+    return clip, clip_pts, audio_sr
+
+def readlastline(path: str):
     with open(path, "rb") as f:
-        f.seek(0, 2)
-        size = f.tell()
-        pos, last = size, b""
-        while pos > 0:
-            read_sz = min(buf, pos)
-            pos -= read_sz
-            f.seek(pos)
-            chunk = f.read(read_sz)
-            lines = (chunk + last).split(b"\n")
-            last  = lines[0]
-            non_empty = [l for l in lines[1:] if l.strip()]
-            if non_empty:
-                return non_empty[-1].decode("utf-8")
-    return last.decode("utf-8")
+        f.seek(-2, 2) # avoid last \n
+        while f.read(1) != b"\n":  
+            f.seek(-2, 1)
+        return f.readline()
 
 def build_conversation(
     conversation: List[Dict[str, Any]],
@@ -121,32 +177,54 @@ def build_conversation(
 class AudioDataSet(Dataset):
     def __init__(self, tokenizer, mimo_audio_tokenizer, mel_transform, path_item, data_args, model, lora_enable=False, ignore_index=-100):
         super(AudioDataSet, self).__init__()
-        self.tokenizer = tokenizer
-        self.mimo_audio_tokenizer = mimo_audio_tokenizer
-        self.mel_transform = mel_transform
-        self.path_item = path_item
-        self.data_args = data_args
+        tokenizer = tokenizer
+        mimo_audio_tokenizer = mimo_audio_tokenizer
+        mel_transform = mel_transform
+        path_item = path_item
+        data_args = data_args
         if lora_enable:
             self.model = model.model
         else:
             self.model = model
+
         self.speech_zeroemb_idx = self.model.speech_empty_ids
         self.ignore_index = ignore_index
+        
+
         if path_item == 'train':
-            list_data_dict = json.load(open(data_args.data_path, "r"))
+            handles = []
+            assert data_args.data_path.endswith('.jsonl'), f"Please organize the annotations in JSONL format, with each data sample on a separate line, and the last line stores the seek indices"
+            logger.warning(f'Load {data_args.data_path}. Please ensure its last line stores the seek indices...')
+            seeks = json.loads(readlastline(data_args.data_path))
+            handles.extend(zip([data_args.data_path] * len(seeks), seeks))
+            logger.warning(f'Successfully loaded {data_args.data_path}')
         else:
-            list_data_dict = json.load(open(data_args.validate_path, "r"))
-        self.list_data_dict = list_data_dict
+            handles = []
+            assert data_args.validate_path.endswith('.jsonl'), f"Please organize the annotations in JSONL format, with each data sample on a separate line, and the last line stores the seek indices"
+            logger.warning(f'Load {data_args.validate_path}. Please ensure its last line stores the seek indices...')
+            seeks = json.loads(readlastline(data_args.validate_path))
+            handles.extend(zip([data_args.validate_path] * len(seeks), seeks))
+            logger.warning(f'Successfully loaded {data_args.validate_path}')
+
+        self.list_data_dict = handles
+
+    def load_conversation(self, index):
+        annotation_path, seek = self.list_data_dict[index]
+        with open(annotation_path) as f:
+            f.seek(seek)
+            line = f.readline()
+        line = json.loads(line)
+        return line
 
     def __len__(self):
         return len(self.list_data_dict)
 
     def wav2mel(self, wav):
-        spec = self.mel_transform(wav[None, :])
+        spec = mel_transform(wav[None, :])
         return torch.log(torch.clip(spec, min=1e-7)).squeeze()
 
     def resample_audio_if_needed(self, wav_tensor: torch.Tensor, original_sr: int):
-        target_sr = self.mimo_audio_tokenizer.config.sampling_rate
+        target_sr = mimo_audio_tokenizer.config.sampling_rate
         if original_sr != target_sr:
             wav_tensor = torchaudio.functional.resample(
                 wav_tensor, original_sr, target_sr
@@ -183,14 +261,14 @@ class AudioDataSet(Dataset):
         return feature_groups, len_groups
 
     def encode_batch(self, input_features: torch.Tensor, input_lens: torch.Tensor, max_length: int = 256000):
-        input_features = input_features.to(device=self.mimo_audio_tokenizer.device, dtype=torch.bfloat16)
-        input_lens = input_lens.to(device=self.mimo_audio_tokenizer.device)
+        input_features = input_features.to(device=mimo_audio_tokenizer.device, dtype=torch.bfloat16)
+        input_lens = input_lens.to(device=mimo_audio_tokenizer.device)
         feature_groups, len_groups = self.group_by_length(input_features, input_lens, max_length)
         
         encoded_parts = []
         for features, lengths in zip(feature_groups, len_groups):
             with torch.no_grad():
-                codes, _ = self.mimo_audio_tokenizer.encoder.encode(
+                codes, _ = mimo_audio_tokenizer.encoder.encode(
                     input_features=features,
                     input_lens=lengths, 
                     return_codes_only=True
@@ -202,7 +280,7 @@ class AudioDataSet(Dataset):
     def get_input_ids(self, prompt):
         input_ids = [
             seg.to_input_id(
-                self.tokenizer, 
+                tokenizer, 
                 self.model.group_size, 
                 self.model.audio_channels,
             )
@@ -215,18 +293,20 @@ class AudioDataSet(Dataset):
         self,
         input: Union[None, str, torch.Tensor] = None,
     ):
-        if isinstance(input, torch.Tensor) or (isinstance(input, str) and os.path.isfile(input)):
+        if (isinstance(input, torch.Tensor) 
+        or (isinstance(input, str) and os.path.isfile(input)) 
+        or (isinstance(input, dict) and os.path.isfile(input["audio"]))):
             if isinstance(input, torch.Tensor):
                 wav = input
             else:
-                wav, sr = torchaudio.load(input)
-                if wav.ndim == 2:
-                    wav = wav.mean(dim=0)
-                wav = self.resample_audio_if_needed(wav, sr)
-            wav = wav
+                # wav, sr = torchaudio.load(input)
+                # if wav.ndim == 2:
+                #     wav = wav.mean(dim=0)
+                # wav = self.resample_audio_if_needed(wav, sr)
+                wav, _, _ = read_audio(input)
+                
             
             mel = self.wav2mel(wav).transpose(0, 1)  # (seq_len, n_mels)
-            mel = mel
 
             input_len = mel.size(0)
             segment_size = 3000
@@ -262,7 +342,7 @@ class AudioDataSet(Dataset):
             return text
 
     def __getitem__(self, i) -> Dict[str, torch.Tensor]:
-        sample = self.list_data_dict[i]
+        sample = self.load_conversation(i)
 
         input_segments = []
         labels_with_loss_segments = [[0]]
@@ -281,7 +361,7 @@ class AudioDataSet(Dataset):
                             text_zeroemb_idx=self.model.args.empty_idx,
                         ))
                     elif content_item['type'] == 'audio':
-                        speech_tokens = self.preprocess_input(content_item['audio'])
+                        speech_tokens = self.preprocess_input(content_item)
                         input_segments.append(InputSegment(
                             text="",
                             audio=speech_tokens,
@@ -309,7 +389,7 @@ class AudioDataSet(Dataset):
                             text_zeroemb_idx=self.model.args.empty_idx,
                         ))
                     elif content_item['type'] == 'audio':
-                        speech_tokens = self.preprocess_input(content_item['audio'])
+                        speech_tokens = self.preprocess_input(content_item)
                         input_segments.append(InputSegment(
                             text="",
                             audio=speech_tokens,
@@ -329,6 +409,7 @@ class AudioDataSet(Dataset):
                     speech_zeroemb_idx=self.speech_zeroemb_idx,
                     text_zeroemb_idx=self.model.args.empty_idx,
                 ))
+                item['thinking'] = False
                 if item['thinking']:
                     input_segments.append(
                         InputSegment(
@@ -366,7 +447,7 @@ class AudioDataSet(Dataset):
                     labels_with_loss_segments[-1].append(current_input_length)
 
                 if 'audio' in item['content'][-1]:
-                    speech_tokens = self.preprocess_input(item['content'][-1]['audio'])
+                    speech_tokens = self.preprocess_input(item['content'][-1])
                     input_segments.append(StreamingInputSegment(
                         text=item['content'][-2]['text'],
                         audio=speech_tokens,
@@ -470,6 +551,111 @@ def make_dialogue_module(tokenizer,
     data_collator = DataCollatorLLMsTraining(tokenizer=tokenizer,
                                              model=model,
                                              ignore_index=-100)
+    
     return dict(train_dataset=train_dataset,
                 eval_dataset=validate_dataset,
                 data_collator=data_collator)
+
+if __name__ == "__main__":
+    from tqdm import tqdm
+    from torch.utils.data import DataLoader
+    from model.mimo_audio.modeling_mimo_audio import (
+        MiMoAudioArguments,
+        MiMoAudioForCausalLM,
+        MiMoSampler,
+        MiMoStopper,
+    )
+    from model.mimo_audio_tokenizer.modeling_audio_tokenizer import MiMoAudioTokenizer
+    from transformers import (
+        AutoTokenizer,
+        GenerationConfig
+    )
+    from torchaudio.transforms import MelSpectrogram
+    from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
+
+    model_path = "XiaomiMiMo/MiMo-Audio-7B-Instruct"
+    tokenizer_path = "XiaomiMiMo/MiMo-Audio-Tokenizer"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    tokenizer: PreTrainedTokenizerFast = AutoTokenizer.from_pretrained(
+            model_path
+        )
+    special_tokens = [
+            "<|sosp|>",
+            "<|eosp|>",
+            "<|empty|>",
+            "<|Human|>",
+            "<|SpeechLM|>",
+            "<|sostm|>",
+            "<|eostm|>",
+            "<|eot|>",
+        ]
+    for token in special_tokens:
+        if token not in tokenizer.get_vocab():
+            print(f"Add special tokens {token} to tokenizer.vocab")
+            tokenizer.add_tokens([token], special_tokens=True)
+
+    mimo_audio_tokenizer = MiMoAudioTokenizer.from_pretrained(tokenizer_path)
+    mimo_audio_tokenizer.to(device, dtype=torch.bfloat16)
+    sosp_idx = tokenizer.convert_tokens_to_ids("<|sosp|>")
+    eosp_idx = tokenizer.convert_tokens_to_ids("<|eosp|>")
+    empty_token = tokenizer.convert_tokens_to_ids("<|empty|>")
+    sostm_idx = tokenizer.convert_tokens_to_ids("<|sostm|>")
+    eostm_idx = tokenizer.convert_tokens_to_ids("<|eostm|>")
+    eot_idx = tokenizer.convert_tokens_to_ids("<|eot|>")
+    im_start_idx = tokenizer.convert_tokens_to_ids("<|im_start|>")
+    im_end_idx = tokenizer.convert_tokens_to_ids("<|im_end|>")
+
+    model_args = MiMoAudioArguments(
+            model_name_or_path=model_path,
+            sosp_idx=sosp_idx,
+            eosp_idx=eosp_idx,
+            empty_idx=empty_token,
+            sostm_idx=sostm_idx,
+            eostm_idx=eostm_idx,
+            eot_idx=eot_idx,
+        )
+
+    model = MiMoAudioForCausalLM.from_pretrained(
+        model_path,
+        args=model_args,
+        torch_dtype=torch.bfloat16,
+        device_map={"": device},
+    )
+
+    mel_transform = MelSpectrogram(
+            sample_rate=mimo_audio_tokenizer.config.sampling_rate,
+            n_fft=mimo_audio_tokenizer.config.nfft,
+            hop_length=mimo_audio_tokenizer.config.hop_length,
+            win_length=mimo_audio_tokenizer.config.window_size,
+            f_min=mimo_audio_tokenizer.config.fmin,
+            f_max=mimo_audio_tokenizer.config.fmax,
+            n_mels=mimo_audio_tokenizer.config.n_mels,
+            power=1.0,
+            center=True,
+        )
+
+    @dataclass
+    class DataArguments:
+        data_path: str = field(default="/home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl",
+                            metadata={"help": "Path to the training data."})
+        validate_path: str = field(default=None,
+                            metadata={"help": "Path to the validation data."})
+    data_args = DataArguments()
+    data = make_dialogue_module(
+            tokenizer=tokenizer, 
+            mimo_audio_tokenizer=mimo_audio_tokenizer,
+            mel_transform=mel_transform,
+            data_args=data_args,
+            model=model,
+            lora_enable=False
+        )
+    
+    train = data["train_dataset"]
+    eval = data["eval_dataset"]
+    collator = data["data_collator"]
+    
+    train_dataloader = DataLoader(train, batch_size=4, shuffle=False, collate_fn=collator)
+
+    for batch in tqdm(train_dataloader):
+        pass

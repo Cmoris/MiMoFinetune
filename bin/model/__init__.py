@@ -1,1 +1,2 @@
-from .mimo_audio.mimo_audio import MiMoAudioForCausalLM, MiMoAudioConfig, MiMoAudioArguments
+from .mimo_audio.mimo_audio import MiMoAudioForCausalLM, MiMoAudioArguments
+from .mimo_audio.modeling_mimo_audio import MiMoAudioConfig
