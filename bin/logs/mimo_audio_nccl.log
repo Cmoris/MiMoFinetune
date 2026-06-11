@@ -1,25 +1,60 @@
-only one gpu, set start method to spawn
-[INFO|training_args.py:2183] 2026-06-11 15:23:24,356 >> PyTorch: setting up devices
+[INFO|training_args.py:2183] 2026-06-12 01:21:59,355 >> PyTorch: setting up devices
+[INFO|training_args.py:2183] 2026-06-12 01:21:59,355 >> PyTorch: setting up devices
+[INFO|training_args.py:2183] 2026-06-12 01:21:59,357 >> PyTorch: setting up devices
+[INFO|training_args.py:2183] 2026-06-12 01:21:59,359 >> PyTorch: setting up devices
 Warning: The cache directory for DeepSpeed Triton autotune, /home/m-wu/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
-[W611 15:23:26.644365111 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
-[Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
+Warning: The cache directory for DeepSpeed Triton autotune, /home/m-wu/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Warning: The cache directory for DeepSpeed Triton autotune, /home/m-wu/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Warning: The cache directory for DeepSpeed Triton autotune, /home/m-wu/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+[W612 01:22:02.419577134 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[W612 01:22:02.419584068 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[W612 01:22:02.419596470 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[W612 01:22:02.419776134 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[Gloo] Rank 1 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
+[Gloo] Rank 2 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
+[Gloo] Rank 0 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
+[Gloo] Rank 3 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
 本地 rank: 0
 日志步数: 1.0
 日志级别: info
 禁用tqdm: False
 Compute data type: torch.bfloat16
 Using 4-bit quantization
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file chat_template.jinja from cache at None
-[INFO|tokenization_utils_base.py:2313] 2026-06-11 15:23:27,620 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,291 >> loading file chat_template.jinja from cache at None
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file chat_template.jinja from cache at None
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,295 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,296 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,296 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,296 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,296 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,296 >> loading file chat_template.jinja from cache at None
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,606 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,607 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,607 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,607 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,607 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,607 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-12 01:22:03,607 >> loading file chat_template.jinja from cache at None
+[INFO|tokenization_utils_base.py:2313] 2026-06-12 01:22:03,629 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|tokenization_utils_base.py:2313] 2026-06-12 01:22:03,632 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|tokenization_utils_base.py:2313] 2026-06-12 01:22:03,637 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+[INFO|tokenization_utils_base.py:2313] 2026-06-12 01:22:03,913 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
 开始从 XiaomiMiMo/MiMo-Audio-7B-Instruct 加载模型...
-[INFO|configuration_utils.py:699] 2026-06-11 15:23:28,525 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
-[INFO|configuration_utils.py:771] 2026-06-11 15:23:28,526 >> Model config Qwen2Config {
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:04,768 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:04,769 >> Model config Qwen2Config {
   "add_input_local_transformer": true,
   "add_speech_sosp_eosp": false,
   "architectures": [
@@ -69,20 +104,203 @@ Using 4-bit quantization
   "vocab_size": 151680
 }
 
-[INFO|modeling_utils.py:3982] 2026-06-11 15:23:28,526 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
-[INFO|modeling_utils.py:1633] 2026-06-11 15:23:28,556 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
-[INFO|configuration_utils.py:1140] 2026-06-11 15:23:28,558 >> Generate config GenerationConfig {}
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:04,776 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:04,777 >> Model config Qwen2Config {
+  "add_input_local_transformer": true,
+  "add_speech_sosp_eosp": false,
+  "architectures": [
+    "MiMoAudioModel"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "audio_channels": 8,
+  "delay_pattern": "0-1-2-3-4-5-6-7",
+  "empty_loss_weight": 0.01,
+  "group_size": 4,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "input_full_attention": true,
+  "input_local_dim": 1024,
+  "input_local_layers": 6,
+  "intermediate_size": 11008,
+  "local_attn_dropout": 0.1,
+  "local_attn_heads": 64,
+  "local_dim": 1024,
+  "local_ffn_dim": 4096,
+  "local_hidden_dropout": 0.1,
+  "local_layers": 16,
+  "max_position_embeddings": 8192,
+  "max_window_layers": 28,
+  "mlp_layers": 1,
+  "model_type": "qwen2",
+  "n_rvq": 20,
+  "no_speech_loss": false,
+  "no_text_loss": false,
+  "num_attention_heads": 32,
+  "num_hidden_layers": 36,
+  "num_key_value_heads": 8,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 640000,
+  "sliding_window": null,
+  "speech_vocab_size": "1025-1025-129-129-129-129-129-129",
+  "speech_zeroemb_idx": "1024-1024-128-128-128-128-128-128",
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.49.0",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151680
+}
 
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.19it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.16it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.23it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.46it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.35it/s]
-[INFO|modeling_utils.py:4970] 2026-06-11 15:23:31,560 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:04,815 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:04,816 >> Model config Qwen2Config {
+  "add_input_local_transformer": true,
+  "add_speech_sosp_eosp": false,
+  "architectures": [
+    "MiMoAudioModel"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "audio_channels": 8,
+  "delay_pattern": "0-1-2-3-4-5-6-7",
+  "empty_loss_weight": 0.01,
+  "group_size": 4,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "input_full_attention": true,
+  "input_local_dim": 1024,
+  "input_local_layers": 6,
+  "intermediate_size": 11008,
+  "local_attn_dropout": 0.1,
+  "local_attn_heads": 64,
+  "local_dim": 1024,
+  "local_ffn_dim": 4096,
+  "local_hidden_dropout": 0.1,
+  "local_layers": 16,
+  "max_position_embeddings": 8192,
+  "max_window_layers": 28,
+  "mlp_layers": 1,
+  "model_type": "qwen2",
+  "n_rvq": 20,
+  "no_speech_loss": false,
+  "no_text_loss": false,
+  "num_attention_heads": 32,
+  "num_hidden_layers": 36,
+  "num_key_value_heads": 8,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 640000,
+  "sliding_window": null,
+  "speech_vocab_size": "1025-1025-129-129-129-129-129-129",
+  "speech_zeroemb_idx": "1024-1024-128-128-128-128-128-128",
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.49.0",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151680
+}
 
-[INFO|modeling_utils.py:4978] 2026-06-11 15:23:31,560 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:05,006 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:05,007 >> Model config Qwen2Config {
+  "add_input_local_transformer": true,
+  "add_speech_sosp_eosp": false,
+  "architectures": [
+    "MiMoAudioModel"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "audio_channels": 8,
+  "delay_pattern": "0-1-2-3-4-5-6-7",
+  "empty_loss_weight": 0.01,
+  "group_size": 4,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "input_full_attention": true,
+  "input_local_dim": 1024,
+  "input_local_layers": 6,
+  "intermediate_size": 11008,
+  "local_attn_dropout": 0.1,
+  "local_attn_heads": 64,
+  "local_dim": 1024,
+  "local_ffn_dim": 4096,
+  "local_hidden_dropout": 0.1,
+  "local_layers": 16,
+  "max_position_embeddings": 8192,
+  "max_window_layers": 28,
+  "mlp_layers": 1,
+  "model_type": "qwen2",
+  "n_rvq": 20,
+  "no_speech_loss": false,
+  "no_text_loss": false,
+  "num_attention_heads": 32,
+  "num_hidden_layers": 36,
+  "num_key_value_heads": 8,
+  "rms_norm_eps": 1e-06,
+  "rope_scaling": null,
+  "rope_theta": 640000,
+  "sliding_window": null,
+  "speech_vocab_size": "1025-1025-129-129-129-129-129-129",
+  "speech_zeroemb_idx": "1024-1024-128-128-128-128-128-128",
+  "tie_word_embeddings": false,
+  "torch_dtype": "bfloat16",
+  "transformers_version": "4.49.0",
+  "use_cache": true,
+  "use_sliding_window": false,
+  "vocab_size": 151680
+}
+
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:05,324 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:05,324 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:05,324 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
+[INFO|modeling_utils.py:1633] 2026-06-12 01:22:05,327 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
+[INFO|modeling_utils.py:1633] 2026-06-12 01:22:05,327 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
+[INFO|modeling_utils.py:1633] 2026-06-12 01:22:05,327 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
+[INFO|configuration_utils.py:1140] 2026-06-12 01:22:05,329 >> Generate config GenerationConfig {}
+
+[INFO|configuration_utils.py:1140] 2026-06-12 01:22:05,329 >> Generate config GenerationConfig {}
+
+[INFO|configuration_utils.py:1140] 2026-06-12 01:22:05,329 >> Generate config GenerationConfig {}
+
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:05,514 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
+[INFO|modeling_utils.py:1633] 2026-06-12 01:22:05,517 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
+[INFO|configuration_utils.py:1140] 2026-06-12 01:22:05,518 >> Generate config GenerationConfig {}
+
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:03,  1.26s/it]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:04,  1.40s/it]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:03,  1.25s/it]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:04,  1.43s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.25s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.31s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.24s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.33s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.17s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.20s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.16s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.22s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.01it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.07s/it]
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:09,825 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:09,825 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
 If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioForCausalLM for predictions without further training.
-[INFO|modeling_utils.py:4366] 2026-06-11 15:23:31,777 >> Generation config file not found, using a generation config created from the model config.
-Model loaded, time: 3.70 seconds, device: cuda:0
+Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.01s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.11s/it]
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:09,970 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:09,970 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioForCausalLM for predictions without further training.
+Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.02it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.07s/it]
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:09,971 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:09,971 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioForCausalLM for predictions without further training.
+Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.02s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:04<00:00,  1.12s/it]
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:10,017 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:10,017 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioForCausalLM for predictions without further training.
+[INFO|modeling_utils.py:4366] 2026-06-12 01:22:10,051 >> Generation config file not found, using a generation config created from the model config.
+Model loaded, time: 5.77 seconds, device: cuda:0
 开始从 XiaomiMiMo/MiMo-Audio-Tokenizer ...
-[INFO|configuration_utils.py:699] 2026-06-11 15:23:32,280 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
-[INFO|configuration_utils.py:771] 2026-06-11 15:23:32,281 >> Model config MiMoAudioTokenizerConfig {
+[INFO|modeling_utils.py:4366] 2026-06-12 01:22:10,225 >> Generation config file not found, using a generation config created from the model config.
+[INFO|modeling_utils.py:4366] 2026-06-12 01:22:10,227 >> Generation config file not found, using a generation config created from the model config.
+[INFO|modeling_utils.py:4366] 2026-06-12 01:22:10,248 >> Generation config file not found, using a generation config created from the model config.
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:10,529 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:10,530 >> Model config MiMoAudioTokenizerConfig {
   "activation_function": "gelu",
   "avg_pooler": 2,
   "codebook_size": [
@@ -157,26 +375,697 @@ Model loaded, time: 3.70 seconds, device: cuda:0
   "window_size": 960
 }
 
-[INFO|modeling_utils.py:3982] 2026-06-11 15:23:32,281 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
-[INFO|modeling_utils.py:4970] 2026-06-11 15:23:33,998 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:10,530 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:10,703 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:10,703 >> Model config MiMoAudioTokenizerConfig {
+  "activation_function": "gelu",
+  "avg_pooler": 2,
+  "codebook_size": [
+    1024,
+    1024,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128
+  ],
+  "d_model": 1280,
+  "decoder_attention_heads": 20,
+  "decoder_attn_window_size": [
+    -1,
+    -1
+  ],
+  "decoder_causal": true,
+  "decoder_ffn_dim": 5120,
+  "decoder_kernel_size": 3,
+  "decoder_layers": 32,
+  "decoder_stride_size": 2,
+  "encoder_attention_heads": 20,
+  "encoder_attn_window_size": [
+    -1,
+    -1
+  ],
+  "encoder_causal": false,
+  "encoder_ffn_dim": 5120,
+  "encoder_layers": 32,
+  "encoder_skip_layer_id": 3,
+  "fmax": null,
+  "fmin": 0,
+  "hop_length": 240,
+  "kernel_size": 3,
+  "ln_type": "LayerNorm",
+  "max_audio_seconds": 1800,
+  "model_type": "mimo_audio_tokenizer",
+  "n_mels": 128,
+  "nfft": 960,
+  "num_quantizers": 20,
+  "position_embedding_type": "rope",
+  "rope_theta": 10000,
+  "rope_type": "default",
+  "sampling_rate": 24000,
+  "scale_embedding": false,
+  "stride_size": 2,
+  "threshold_ema_dead_code": 2,
+  "transformers_version": "4.49.0",
+  "vocoder_attention_heads": 16,
+  "vocoder_attn_window_size": [
+    40,
+    10
+  ],
+  "vocoder_dim": 256,
+  "vocoder_intermediate_dim": 1024,
+  "vocoder_num_layers": 16,
+  "vocoder_padding": "same",
+  "window_size": 960
+}
 
-[INFO|modeling_utils.py:4978] 2026-06-11 15:23:33,998 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:10,704 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:10,709 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:10,710 >> Model config MiMoAudioTokenizerConfig {
+  "activation_function": "gelu",
+  "avg_pooler": 2,
+  "codebook_size": [
+    1024,
+    1024,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128
+  ],
+  "d_model": 1280,
+  "decoder_attention_heads": 20,
+  "decoder_attn_window_size": [
+    -1,
+    -1
+  ],
+  "decoder_causal": true,
+  "decoder_ffn_dim": 5120,
+  "decoder_kernel_size": 3,
+  "decoder_layers": 32,
+  "decoder_stride_size": 2,
+  "encoder_attention_heads": 20,
+  "encoder_attn_window_size": [
+    -1,
+    -1
+  ],
+  "encoder_causal": false,
+  "encoder_ffn_dim": 5120,
+  "encoder_layers": 32,
+  "encoder_skip_layer_id": 3,
+  "fmax": null,
+  "fmin": 0,
+  "hop_length": 240,
+  "kernel_size": 3,
+  "ln_type": "LayerNorm",
+  "max_audio_seconds": 1800,
+  "model_type": "mimo_audio_tokenizer",
+  "n_mels": 128,
+  "nfft": 960,
+  "num_quantizers": 20,
+  "position_embedding_type": "rope",
+  "rope_theta": 10000,
+  "rope_type": "default",
+  "sampling_rate": 24000,
+  "scale_embedding": false,
+  "stride_size": 2,
+  "threshold_ema_dead_code": 2,
+  "transformers_version": "4.49.0",
+  "vocoder_attention_heads": 16,
+  "vocoder_attn_window_size": [
+    40,
+    10
+  ],
+  "vocoder_dim": 256,
+  "vocoder_intermediate_dim": 1024,
+  "vocoder_num_layers": 16,
+  "vocoder_padding": "same",
+  "window_size": 960
+}
+
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:10,711 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
+[INFO|configuration_utils.py:699] 2026-06-12 01:22:10,723 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
+[INFO|configuration_utils.py:771] 2026-06-12 01:22:10,724 >> Model config MiMoAudioTokenizerConfig {
+  "activation_function": "gelu",
+  "avg_pooler": 2,
+  "codebook_size": [
+    1024,
+    1024,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128,
+    128
+  ],
+  "d_model": 1280,
+  "decoder_attention_heads": 20,
+  "decoder_attn_window_size": [
+    -1,
+    -1
+  ],
+  "decoder_causal": true,
+  "decoder_ffn_dim": 5120,
+  "decoder_kernel_size": 3,
+  "decoder_layers": 32,
+  "decoder_stride_size": 2,
+  "encoder_attention_heads": 20,
+  "encoder_attn_window_size": [
+    -1,
+    -1
+  ],
+  "encoder_causal": false,
+  "encoder_ffn_dim": 5120,
+  "encoder_layers": 32,
+  "encoder_skip_layer_id": 3,
+  "fmax": null,
+  "fmin": 0,
+  "hop_length": 240,
+  "kernel_size": 3,
+  "ln_type": "LayerNorm",
+  "max_audio_seconds": 1800,
+  "model_type": "mimo_audio_tokenizer",
+  "n_mels": 128,
+  "nfft": 960,
+  "num_quantizers": 20,
+  "position_embedding_type": "rope",
+  "rope_theta": 10000,
+  "rope_type": "default",
+  "sampling_rate": 24000,
+  "scale_embedding": false,
+  "stride_size": 2,
+  "threshold_ema_dead_code": 2,
+  "transformers_version": "4.49.0",
+  "vocoder_attention_heads": 16,
+  "vocoder_attn_window_size": [
+    40,
+    10
+  ],
+  "vocoder_dim": 256,
+  "vocoder_intermediate_dim": 1024,
+  "vocoder_num_layers": 16,
+  "vocoder_padding": "same",
+  "window_size": 960
+}
+
+[INFO|modeling_utils.py:3982] 2026-06-12 01:22:10,724 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:12,811 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:12,811 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
 If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioTokenizer for predictions without further training.
-Audio tokenizer loaded, time: 3.13 seconds, device: cuda:0
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:12,988 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:12,988 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioTokenizer for predictions without further training.
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:13,038 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:13,039 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioTokenizer for predictions without further training.
+[INFO|modeling_utils.py:4970] 2026-06-12 01:22:13,039 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
+
+[INFO|modeling_utils.py:4978] 2026-06-12 01:22:13,039 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioTokenizer for predictions without further training.
+Audio tokenizer loaded, time: 3.92 seconds, device: cuda:0
 Mel spectrogram transformer initialized
 Preparing quantization training model...
-[rank0]: Traceback (most recent call last):
-[rank0]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 373, in <module>
-[rank0]:     train()
-[rank0]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 220, in train
-[rank0]:     model = prepare_model_for_kbit_training(
-[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/peft/utils/other.py", line 186, in prepare_model_for_kbit_training
-[rank0]:     param.data = param.data.to(torch.float32)
-[rank0]:                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 172.00 MiB. GPU 0 has a total capacity of 31.36 GiB of which 79.69 MiB is free. Including non-PyTorch memory, this process has 31.27 GiB memory in use. Of the allocated memory 29.50 GiB is allocated by PyTorch, and 1.18 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
-[rank0]:[W611 15:23:36.066654702 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
-E0611 15:23:36.984000 3664367 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 3664381) of binary: /home/m-wu/miniconda3/envs/mimo_cuda13/bin/python3.12
+Configuring LoRA adapter...
+LoRA target modules: ['q_proj', 'k_proj', 'v_proj', 'o_proj']
+Adding LoRA adapter...
+==================================================
+Trainable parameters statistics:
+  Trainable parameters: 72.88M
+  Total parameters: 4396.67M
+  Trainable ratio: 1.66%
+==================================================
+Adjusting quantization model各层精度...
+Preparing data module...
+06/12/2026 01:22:14 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:14 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:14 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:14 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:32 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl
+06/12/2026 01:22:32 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:33 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl
+06/12/2026 01:22:33 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:33 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl
+06/12/2026 01:22:33 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:33 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl
+06/12/2026 01:22:33 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl. Please ensure its last line stores the seek indices...
+06/12/2026 01:22:34 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl
+Initializing Trainer...
+[INFO|trainer.py:746] 2026-06-12 01:22:34,579 >> Using auto half precision backend
+[WARNING|trainer.py:781] 2026-06-12 01:22:34,580 >> No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+==================================================
+Starting training...
+==================================================
+Starting training from scratch
+[INFO|trainer.py:140] 2026-06-12 01:22:34,922 >> Created optimizer with 3 parameter groups:
+[INFO|trainer.py:143] 2026-06-12 01:22:34,922 >>   Group 0: lr=2e-05, weight_decay=0.01, params=3.15M
+[INFO|trainer.py:143] 2026-06-12 01:22:34,922 >>   Group 1: lr=2e-05, weight_decay=0.01, params=8.39M
+[INFO|trainer.py:143] 2026-06-12 01:22:34,923 >>   Group 2: lr=2e-05, weight_decay=0.01, params=61.34M
+06/12/2026 01:22:35 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl
+[WARNING|trainer.py:781] 2026-06-12 01:22:35,984 >> No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+06/12/2026 01:22:36 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl
+06/12/2026 01:22:36 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl
+[WARNING|trainer.py:781] 2026-06-12 01:22:36,608 >> No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+[WARNING|trainer.py:781] 2026-06-12 01:22:36,637 >> No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+[Gloo] Rank 0 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
+[Gloo] Rank 1 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3[Gloo] Rank 
+3 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
+[Gloo] Rank 2 is connected to 3 peer ranks. Expected number of connected peer ranks is : 3
+gp36:178252:178252 [0] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178252:178252 [0] NCCL INFO Bootstrap: Using lo:127.0.0.1<0>
+gp36:178252:178252 [0] NCCL INFO cudaDriverVersion 13020
+gp36:178252:178252 [0] NCCL INFO NCCL version 2.27.3+cuda12.9
+gp36:178252:178252 [0] NCCL INFO Comm config Blocking set to 1
+gp36:178255:178255 [3] NCCL INFO cudaDriverVersion 13020
+gp36:178255:178255 [3] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178254:178254 [2] NCCL INFO cudaDriverVersion 13020
+gp36:178255:178255 [3] NCCL INFO Bootstrap: Using lo:127.0.0.1<0>
+gp36:178255:178255 [3] NCCL INFO NCCL version 2.27.3+cuda12.9
+gp36:178255:178255 [3] NCCL INFO Comm config Blocking set to 1
+gp36:178254:178254 [2] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178254:178254 [2] NCCL INFO Bootstrap: Using lo:127.0.0.1<0>
+gp36:178254:178254 [2] NCCL INFO NCCL version 2.27.3+cuda12.9
+gp36:178254:178254 [2] NCCL INFO Comm config Blocking set to 1
+gp36:178253:178253 [1] NCCL INFO cudaDriverVersion 13020
+gp36:178253:178253 [1] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178253:178253 [1] NCCL INFO Bootstrap: Using lo:127.0.0.1<0>
+gp36:178253:178253 [1] NCCL INFO NCCL version 2.27.3+cuda12.9
+gp36:178253:178253 [1] NCCL INFO Comm config Blocking set to 1
+gp36:178252:180445 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+gp36:178252:180445 [0] NCCL INFO NCCL_IB_DISABLE set by environment to 1.
+gp36:178252:180445 [0] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178252:180445 [0] NCCL INFO NET/Socket : Using [0]lo:127.0.0.1<0>
+gp36:178252:180445 [0] NCCL INFO Initialized NET plugin Socket
+gp36:178252:180445 [0] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178252:180445 [0] NCCL INFO Using network Socket
+gp36:178252:180445 [0] NCCL INFO ncclCommInitRankConfig comm 0x50f84020 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 65000 commId 0x5940321098048ec2 - Init START
+gp36:178254:180447 [2] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+gp36:178254:180447 [2] NCCL INFO NCCL_IB_DISABLE set by environment to 1.
+gp36:178254:180447 [2] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178254:180447 [2] NCCL INFO NET/Socket : Using [0]lo:127.0.0.1<0>
+gp36:178254:180447 [2] NCCL INFO Initialized NET plugin Socket
+gp36:178254:180447 [2] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178254:180447 [2] NCCL INFO Using network Socket
+gp36:178254:180447 [2] NCCL INFO ncclCommInitRankConfig comm 0x1ceff780 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId d8000 commId 0x5940321098048ec2 - Init START
+gp36:178253:180448 [1] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+gp36:178253:180448 [1] NCCL INFO NCCL_IB_DISABLE set by environment to 1.
+gp36:178253:180448 [1] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178253:180448 [1] NCCL INFO NET/Socket : Using [0]lo:127.0.0.1<0>
+gp36:178253:180448 [1] NCCL INFO Initialized NET plugin Socket
+gp36:178253:180448 [1] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178253:180448 [1] NCCL INFO Using network Socket
+gp36:178253:180448 [1] NCCL INFO ncclCommInitRankConfig comm 0x3837ec20 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 92000 commId 0x5940321098048ec2 - Init START
+gp36:178253:180448 [1] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gp36:178255:180446 [3] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. 
+gp36:178255:180446 [3] NCCL INFO NCCL_IB_DISABLE set by environment to 1.
+gp36:178255:180446 [3] NCCL INFO NCCL_SOCKET_IFNAME set by environment to lo
+gp36:178255:180446 [3] NCCL INFO NET/Socket : Using [0]lo:127.0.0.1<0>
+gp36:178255:180446 [3] NCCL INFO Initialized NET plugin Socket
+gp36:178255:180446 [3] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178255:180446 [3] NCCL INFO Using network Socket
+gp36:178255:180446 [3] NCCL INFO ncclCommInitRankConfig comm 0x4d7bdec0 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId e0000 commId 0x5940321098048ec2 - Init START
+gp36:178254:180447 [2] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gp36:178255:180446 [3] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gp36:178252:180445 [0] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gp36:178252:180445 [0] NCCL INFO Bootstrap timings total 0.014045 (create 0.000031, send 0.000132, recv 0.011352, ring 0.000037, delay 0.000000)
+gp36:178255:180446 [3] NCCL INFO Bootstrap timings total 0.000476 (create 0.000020, send 0.000105, recv 0.000115, ring 0.000043, delay 0.000001)
+gp36:178254:180447 [2] NCCL INFO Bootstrap timings total 0.004317 (create 0.000025, send 0.000100, recv 0.003897, ring 0.000059, delay 0.000000)
+gp36:178253:180448 [1] NCCL INFO Bootstrap timings total 0.002771 (create 0.000023, send 0.000117, recv 0.000137, ring 0.002295, delay 0.000000)
+gp36:178252:180445 [0] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+gp36:178255:180446 [3] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+gp36:178254:180447 [2] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+gp36:178253:180448 [1] NCCL INFO NCCL_P2P_DISABLE set by environment to 1
+gp36:178255:180446 [3] NCCL INFO Setting affinity for GPU 3 to 0-23
+gp36:178255:180446 [3] NCCL INFO NVLS multicast support is not available on dev 3 (NVLS_NCHANNELS 0)
+gp36:178254:180447 [2] NCCL INFO Setting affinity for GPU 2 to 0-23
+gp36:178254:180447 [2] NCCL INFO NVLS multicast support is not available on dev 2 (NVLS_NCHANNELS 0)
+gp36:178252:180445 [0] NCCL INFO Setting affinity for GPU 0 to 0-23
+gp36:178252:180445 [0] NCCL INFO NVLS multicast support is not available on dev 0 (NVLS_NCHANNELS 0)
+gp36:178253:180448 [1] NCCL INFO Setting affinity for GPU 1 to 0-23
+gp36:178253:180448 [1] NCCL INFO NVLS multicast support is not available on dev 1 (NVLS_NCHANNELS 0)
+gp36:178253:180448 [1] NCCL INFO comm 0x3837ec20 rank 1 nRanks 4 nNodes 1 localRanks 4 localRank 1 MNNVL 0
+gp36:178252:180445 [0] NCCL INFO comm 0x50f84020 rank 0 nRanks 4 nNodes 1 localRanks 4 localRank 0 MNNVL 0
+gp36:178254:180447 [2] NCCL INFO comm 0x1ceff780 rank 2 nRanks 4 nNodes 1 localRanks 4 localRank 2 MNNVL 0
+gp36:178255:180446 [3] NCCL INFO comm 0x4d7bdec0 rank 3 nRanks 4 nNodes 1 localRanks 4 localRank 3 MNNVL 0
+gp36:178252:180445 [0] NCCL INFO Channel 00/04 : 0 1 2 3
+gp36:178254:180447 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1 [2] 3/-1/-1->2->1 [3] 3/-1/-1->2->1
+gp36:178253:180448 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0 [2] 2/-1/-1->1->0 [3] 2/-1/-1->1->0
+gp36:178252:180445 [0] NCCL INFO Channel 01/04 : 0 1 2 3
+gp36:178254:180447 [2] NCCL INFO P2P Chunksize set to 131072
+gp36:178253:180448 [1] NCCL INFO P2P Chunksize set to 131072
+gp36:178255:180446 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] -1/-1/-1->3->2 [2] -1/-1/-1->3->2 [3] -1/-1/-1->3->2
+gp36:178252:180445 [0] NCCL INFO Channel 02/04 : 0 1 2 3
+gp36:178255:180446 [3] NCCL INFO P2P Chunksize set to 131072
+gp36:178252:180445 [0] NCCL INFO Channel 03/04 : 0 1 2 3
+gp36:178252:180445 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1 [2] 1/-1/-1->0->-1 [3] 1/-1/-1->0->-1
+gp36:178252:180445 [0] NCCL INFO P2P Chunksize set to 131072
+gp36:178252:180445 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+gp36:178253:180448 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+gp36:178254:180447 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+gp36:178252:180445 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 0
+gp36:178255:180446 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+gp36:178253:180453 [1] NCCL INFO [Proxy Service] Device 1 CPU core 20
+gp36:178255:180454 [3] NCCL INFO [Proxy Service] Device 3 CPU core 11
+gp36:178254:180455 [2] NCCL INFO [Proxy Service] Device 2 CPU core 23
+gp36:178253:180457 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 3
+gp36:178254:180459 [2] NCCL INFO [Proxy Service UDS] Device 2 CPU core 15
+gp36:178255:180458 [3] NCCL INFO [Proxy Service UDS] Device 3 CPU core 3
+gp36:178252:180456 [0] NCCL INFO [Proxy Service] Device 0 CPU core 16
+gp36:178252:180460 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 5
+gp36:178254:180447 [2] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178254:180447 [2] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178253:180448 [1] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178253:180448 [1] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178255:180446 [3] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178255:180446 [3] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178252:180445 [0] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178252:180445 [0] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178252:180445 [0] NCCL INFO CC Off, workFifoBytes 1048576
+gp36:178255:180446 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+gp36:178255:180446 [3] NCCL INFO ncclCommInitRankConfig comm 0x4d7bdec0 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId e0000 commId 0x5940321098048ec2 - Init COMPLETE
+gp36:178255:180446 [3] NCCL INFO Init timings - ncclCommInitRankConfig: rank 3 nranks 4 total 0.32 (kernels 0.29, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+gp36:178254:180447 [2] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+gp36:178254:180447 [2] NCCL INFO ncclCommInitRankConfig comm 0x1ceff780 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId d8000 commId 0x5940321098048ec2 - Init COMPLETE
+gp36:178254:180447 [2] NCCL INFO Init timings - ncclCommInitRankConfig: rank 2 nranks 4 total 0.32 (kernels 0.29, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+gp36:178252:180445 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+gp36:178252:180445 [0] NCCL INFO ncclCommInitRankConfig comm 0x50f84020 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 65000 commId 0x5940321098048ec2 - Init COMPLETE
+gp36:178252:180445 [0] NCCL INFO Init timings - ncclCommInitRankConfig: rank 0 nranks 4 total 0.34 (kernels 0.30, alloc 0.00, bootstrap 0.01, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+gp36:178253:180448 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+gp36:178253:180448 [1] NCCL INFO ncclCommInitRankConfig comm 0x3837ec20 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 92000 commId 0x5940321098048ec2 - Init COMPLETE
+gp36:178253:180448 [1] NCCL INFO Init timings - ncclCommInitRankConfig: rank 1 nranks 4 total 0.31 (kernels 0.29, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+gp36:178253:180461 [1] NCCL INFO Channel 00 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178252:180464 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178253:180461 [1] NCCL INFO Channel 01 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178254:180463 [2] NCCL INFO Channel 00 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178255:180462 [3] NCCL INFO Channel 00 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178253:180461 [1] NCCL INFO Channel 02 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178252:180464 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178254:180463 [2] NCCL INFO Channel 01 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178255:180462 [3] NCCL INFO Channel 01 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178252:180464 [0] NCCL INFO Channel 02 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178253:180461 [1] NCCL INFO Channel 03 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178255:180462 [3] NCCL INFO Channel 02 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178254:180463 [2] NCCL INFO Channel 02 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178252:180464 [0] NCCL INFO Channel 03 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178254:180463 [2] NCCL INFO Channel 03 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178255:180462 [3] NCCL INFO Channel 03 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178253:180461 [1] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+gp36:178252:180464 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+gp36:178254:180463 [2] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+gp36:178255:180462 [3] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+[INFO|trainer.py:2405] 2026-06-12 01:22:38,373 >> ***** Running training *****
+[INFO|trainer.py:2406] 2026-06-12 01:22:38,373 >>   Num examples = 89,469
+[INFO|trainer.py:2407] 2026-06-12 01:22:38,373 >>   Num Epochs = 1
+[INFO|trainer.py:2408] 2026-06-12 01:22:38,373 >>   Instantaneous batch size per device = 1
+[INFO|trainer.py:2411] 2026-06-12 01:22:38,373 >>   Total train batch size (w. parallel, distributed & accumulation) = 4
+[INFO|trainer.py:2412] 2026-06-12 01:22:38,373 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:2413] 2026-06-12 01:22:38,373 >>   Total optimization steps = 22,368
+[INFO|trainer.py:2414] 2026-06-12 01:22:38,378 >>   Number of trainable parameters = 72,876,032
+/home/m-wu/proj/MiMo/bin/data/dataset.py:45: UserWarning: torchaudio._backend.utils.info has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  info = torchaudio.info(audio_path)
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/soundfile_backend.py:120: UserWarning: torchaudio._backend.common.AudioMetaData has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  return AudioMetaData(
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/utils.py:213: UserWarning: In 2.9, this function's implementation will be changed to use torchaudio.load_with_torchcodec` under the hood. Some parameters like ``normalize``, ``format``, ``buffer_size``, and ``backend`` will be ignored. We recommend that you port your code to rely directly on TorchCodec's decoder instead: https://docs.pytorch.org/torchcodec/stable/generated/torchcodec.decoders.AudioDecoder.html#torchcodec.decoders.AudioDecoder.
+  warnings.warn(
+/home/m-wu/proj/MiMo/bin/data/dataset.py:45: UserWarning: torchaudio._backend.utils.info has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  info = torchaudio.info(audio_path)
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/soundfile_backend.py:120: UserWarning: torchaudio._backend.common.AudioMetaData has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  return AudioMetaData(
+/home/m-wu/proj/MiMo/bin/data/dataset.py:45: UserWarning: torchaudio._backend.utils.info has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  info = torchaudio.info(audio_path)
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/utils.py:213: UserWarning: In 2.9, this function's implementation will be changed to use torchaudio.load_with_torchcodec` under the hood. Some parameters like ``normalize``, ``format``, ``buffer_size``, and ``backend`` will be ignored. We recommend that you port your code to rely directly on TorchCodec's decoder instead: https://docs.pytorch.org/torchcodec/stable/generated/torchcodec.decoders.AudioDecoder.html#torchcodec.decoders.AudioDecoder.
+  warnings.warn(
+  0%|          | 0/22368 [00:00<?, ?it/s]/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/soundfile_backend.py:120: UserWarning: torchaudio._backend.common.AudioMetaData has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  return AudioMetaData(
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/utils.py:213: UserWarning: In 2.9, this function's implementation will be changed to use torchaudio.load_with_torchcodec` under the hood. Some parameters like ``normalize``, ``format``, ``buffer_size``, and ``backend`` will be ignored. We recommend that you port your code to rely directly on TorchCodec's decoder instead: https://docs.pytorch.org/torchcodec/stable/generated/torchcodec.decoders.AudioDecoder.html#torchcodec.decoders.AudioDecoder.
+  warnings.warn(
+/home/m-wu/proj/MiMo/bin/data/dataset.py:45: UserWarning: torchaudio._backend.utils.info has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  info = torchaudio.info(audio_path)
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/soundfile_backend.py:120: UserWarning: torchaudio._backend.common.AudioMetaData has been deprecated. This deprecation is part of a large refactoring effort to transition TorchAudio into a maintenance phase. The decoding and encoding capabilities of PyTorch for both audio and video are being consolidated into TorchCodec. Please see https://github.com/pytorch/audio/issues/3902 for more information. It will be removed from the 2.9 release. 
+  return AudioMetaData(
+/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torchaudio/_backend/utils.py:213: UserWarning: In 2.9, this function's implementation will be changed to use torchaudio.load_with_torchcodec` under the hood. Some parameters like ``normalize``, ``format``, ``buffer_size``, and ``backend`` will be ignored. We recommend that you port your code to rely directly on TorchCodec's decoder instead: https://docs.pytorch.org/torchcodec/stable/generated/torchcodec.decoders.AudioDecoder.html#torchcodec.decoders.AudioDecoder.
+  warnings.warn(
+  0%|          | 1/22368 [00:03<22:54:52,  3.69s/it]gp36:178252:178252 [0] NCCL INFO Comm config Blocking set to 1
+gp36:178254:178254 [2] NCCL INFO Comm config Blocking set to 1
+gp36:178253:178253 [1] NCCL INFO Comm config Blocking set to 1
+gp36:178255:178255 [3] NCCL INFO Comm config Blocking set to 1
+gp36:178254:180918 [2] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178254:180918 [2] NCCL INFO Using network Socket
+gp36:178252:180917 [0] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178253:180919 [1] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178252:180917 [0] NCCL INFO Using network Socket
+gp36:178253:180919 [1] NCCL INFO Using network Socket
+gp36:178254:180918 [2] NCCL INFO ncclCommInitRankConfig comm 0x71c57700 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId d8000 commId 0xbf93d288e1821842 - Init START
+gp36:178253:180919 [1] NCCL INFO ncclCommInitRankConfig comm 0x8f29bd90 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 92000 commId 0xbf93d288e1821842 - Init START
+gp36:178252:180917 [0] NCCL INFO ncclCommInitRankConfig comm 0xa76b8790 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 65000 commId 0xbf93d288e1821842 - Init START
+gp36:178255:180920 [3] NCCL INFO Assigned NET plugin Socket to comm
+gp36:178255:180920 [3] NCCL INFO Using network Socket
+gp36:178255:180920 [3] NCCL INFO ncclCommInitRankConfig comm 0xa218db50 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId e0000 commId 0xbf93d288e1821842 - Init START
+gp36:178254:180918 [2] NCCL INFO Bootstrap timings total 0.001276 (create 0.000027, send 0.000109, recv 0.000736, ring 0.000293, delay 0.000000)
+gp36:178253:180919 [1] NCCL INFO Bootstrap timings total 0.001258 (create 0.000026, send 0.000097, recv 0.000182, ring 0.000686, delay 0.000000)
+gp36:178252:180917 [0] NCCL INFO Bootstrap timings total 0.001181 (create 0.000038, send 0.000172, recv 0.000132, ring 0.000132, delay 0.000000)
+gp36:178255:180920 [3] NCCL INFO Bootstrap timings total 0.000738 (create 0.000052, send 0.000222, recv 0.000129, ring 0.000093, delay 0.000000)
+gp36:178253:180919 [1] NCCL INFO Setting affinity for GPU 1 to 0-23
+gp36:178253:180919 [1] NCCL INFO NVLS multicast support is not available on dev 1 (NVLS_NCHANNELS 0)
+gp36:178254:180918 [2] NCCL INFO Setting affinity for GPU 2 to 0-23
+gp36:178255:180920 [3] NCCL INFO Setting affinity for GPU 3 to 0-23
+gp36:178254:180918 [2] NCCL INFO NVLS multicast support is not available on dev 2 (NVLS_NCHANNELS 0)
+gp36:178255:180920 [3] NCCL INFO NVLS multicast support is not available on dev 3 (NVLS_NCHANNELS 0)
+gp36:178252:180917 [0] NCCL INFO Setting affinity for GPU 0 to 0-23
+gp36:178252:180917 [0] NCCL INFO NVLS multicast support is not available on dev 0 (NVLS_NCHANNELS 0)
+gp36:178252:180917 [0] NCCL INFO comm 0xa76b8790 rank 0 nRanks 4 nNodes 1 localRanks 4 localRank 0 MNNVL 0
+gp36:178254:180918 [2] NCCL INFO comm 0x71c57700 rank 2 nRanks 4 nNodes 1 localRanks 4 localRank 2 MNNVL 0
+gp36:178255:180920 [3] NCCL INFO comm 0xa218db50 rank 3 nRanks 4 nNodes 1 localRanks 4 localRank 3 MNNVL 0
+gp36:178253:180919 [1] NCCL INFO comm 0x8f29bd90 rank 1 nRanks 4 nNodes 1 localRanks 4 localRank 1 MNNVL 0
+gp36:178252:180917 [0] NCCL INFO Channel 00/04 : 0 1 2 3
+gp36:178252:180917 [0] NCCL INFO Channel 01/04 : 0 1 2 3
+gp36:178254:180918 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1 [2] 3/-1/-1->2->1 [3] 3/-1/-1->2->1
+gp36:178255:180920 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] -1/-1/-1->3->2 [2] -1/-1/-1->3->2 [3] -1/-1/-1->3->2
+gp36:178252:180917 [0] NCCL INFO Channel 02/04 : 0 1 2 3
+gp36:178254:180918 [2] NCCL INFO P2P Chunksize set to 131072
+gp36:178255:180920 [3] NCCL INFO P2P Chunksize set to 131072
+gp36:178252:180917 [0] NCCL INFO Channel 03/04 : 0 1 2 3
+gp36:178253:180919 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0 [2] 2/-1/-1->1->0 [3] 2/-1/-1->1->0
+gp36:178253:180919 [1] NCCL INFO P2P Chunksize set to 131072
+gp36:178252:180917 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1 [2] 1/-1/-1->0->-1 [3] 1/-1/-1->0->-1
+gp36:178252:180917 [0] NCCL INFO P2P Chunksize set to 131072
+gp36:178252:180917 [0] NCCL INFO Check P2P Type isAllDirectP2p 0 directMode 0
+gp36:178252:180921 [0] NCCL INFO [Proxy Service] Device 0 CPU core 21
+gp36:178253:180928 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 5
+gp36:178255:180922 [3] NCCL INFO [Proxy Service] Device 3 CPU core 10
+gp36:178255:180925 [3] NCCL INFO [Proxy Service UDS] Device 3 CPU core 7
+gp36:178253:180924 [1] NCCL INFO [Proxy Service] Device 1 CPU core 21
+gp36:178254:180926 [2] NCCL INFO [Proxy Service UDS] Device 2 CPU core 4
+gp36:178254:180923 [2] NCCL INFO [Proxy Service] Device 2 CPU core 0
+gp36:178252:180927 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 4
+gp36:178252:180917 [0] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178252:180917 [0] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178252:180917 [0] NCCL INFO CC Off, workFifoBytes 1048576
+gp36:178254:180918 [2] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178254:180918 [2] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178253:180919 [1] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178253:180919 [1] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178255:180920 [3] NCCL INFO threadThresholds 8/8/64 | 32/8/64 | 512 | 512
+gp36:178255:180920 [3] NCCL INFO 4 coll channels, 4 collnet channels, 0 nvls channels, 4 p2p channels, 2 p2p channels per peer
+gp36:178254:180918 [2] NCCL INFO ncclCommInitRankConfig comm 0x71c57700 rank 2 nranks 4 cudaDev 2 nvmlDev 2 busId d8000 commId 0xbf93d288e1821842 - Init COMPLETE
+gp36:178252:180917 [0] NCCL INFO ncclCommInitRankConfig comm 0xa76b8790 rank 0 nranks 4 cudaDev 0 nvmlDev 0 busId 65000 commId 0xbf93d288e1821842 - Init COMPLETE
+gp36:178252:180917 [0] NCCL INFO Init timings - ncclCommInitRankConfig: rank 0 nranks 4 total 0.02 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+gp36:178254:180918 [2] NCCL INFO Init timings - ncclCommInitRankConfig: rank 2 nranks 4 total 0.02 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+gp36:178255:180920 [3] NCCL INFO ncclCommInitRankConfig comm 0xa218db50 rank 3 nranks 4 cudaDev 3 nvmlDev 3 busId e0000 commId 0xbf93d288e1821842 - Init COMPLETE
+gp36:178255:180920 [3] NCCL INFO Init timings - ncclCommInitRankConfig: rank 3 nranks 4 total 0.02 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.00, rest 0.00)
+gp36:178253:180919 [1] NCCL INFO ncclCommInitRankConfig comm 0x8f29bd90 rank 1 nranks 4 cudaDev 1 nvmlDev 1 busId 92000 commId 0xbf93d288e1821842 - Init COMPLETE
+gp36:178253:180919 [1] NCCL INFO Init timings - ncclCommInitRankConfig: rank 1 nranks 4 total 0.02 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.01, graphs 0.00, connections 0.01, rest 0.00)
+gp36:178252:180931 [0] NCCL INFO Channel 00 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178254:180930 [2] NCCL INFO Channel 00 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178255:180929 [3] NCCL INFO Channel 00 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178253:180932 [1] NCCL INFO Channel 00 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178252:180931 [0] NCCL INFO Channel 01 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178255:180929 [3] NCCL INFO Channel 01 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178253:180932 [1] NCCL INFO Channel 01 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178254:180930 [2] NCCL INFO Channel 01 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178252:180931 [0] NCCL INFO Channel 02 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178253:180932 [1] NCCL INFO Channel 02 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178255:180929 [3] NCCL INFO Channel 02 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178254:180930 [2] NCCL INFO Channel 02 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178255:180929 [3] NCCL INFO Channel 03 : 3[3] -> 0[0] via SHM/direct/direct
+gp36:178252:180931 [0] NCCL INFO Channel 03 : 0[0] -> 1[1] via SHM/direct/direct
+gp36:178253:180932 [1] NCCL INFO Channel 03 : 1[1] -> 2[2] via SHM/direct/direct
+gp36:178254:180930 [2] NCCL INFO Channel 03 : 2[2] -> 3[3] via SHM/direct/direct
+gp36:178253:180932 [1] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+gp36:178252:180931 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+gp36:178255:180929 [3] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+gp36:178254:180930 [2] NCCL INFO Connected all rings, use ring PXN 0 GDR 1
+                                                    {'loss': 3.5071, 'grad_norm': 1.6047779321670532, 'learning_rate': 2.9761904761904764e-08, 'epoch': 0.0}
+  0%|          | 1/22368 [00:03<22:54:52,  3.69s/it][rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 371, in <module>
+[rank1]:     train()
+[rank1]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 322, in train
+[rank1]:     trainer.train()
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer.py", line 2241, in train
+[rank1]:     return inner_training_loop(
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer.py", line 2548, in _inner_training_loop
+[rank1]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank1]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer.py", line 3698, in training_step
+[rank1]:     loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer.py", line 3759, in compute_loss
+[rank1]:     outputs = model(**inputs)
+[rank1]:               ^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/deepspeed/utils/nvtx.py", line 33, in wrapped_fn
+[rank1]:     ret_val = func(*args, **kwargs)
+[rank1]:               ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 2375, in forward
+[rank1]:     loss = self.module(*inputs, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1879, in _call_impl
+[rank1]:     return inner()
+[rank1]:            ^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1827, in inner
+[rank1]:     result = forward_call(*args, **kwargs)
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/peft/peft_model.py", line 1993, in forward
+[rank1]:     return self.base_model(
+[rank1]:            ^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/peft/tuners/tuners_utils.py", line 330, in forward
+[rank1]:     return self.model.forward(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/proj/MiMo/bin/model/mimo_audio/modeling_mimo_audio.py", line 481, in forward
+[rank1]:     outputs: BaseModelOutputWithPast = self.model(
+[rank1]:                                        ^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 579, in forward
+[rank1]:     layer_outputs = decoder_layer(
+[rank1]:                     ^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 276, in forward
+[rank1]:     hidden_states = self.mlp(hidden_states)
+[rank1]:                     ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/models/qwen2/modeling_qwen2.py", line 57, in forward
+[rank1]:     down_proj = self.down_proj(self.act_fn(self.gate_proj(x)) * self.up_proj(x))
+[rank1]:                                                                 ^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/bitsandbytes/nn/modules.py", line 556, in forward
+[rank1]:     return bnb.matmul_4bit(x, weight, bias=bias, quant_state=quant_state).to(inp_dtype)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 320.00 MiB. GPU 1 has a total capacity of 94.97 GiB of which 244.12 MiB is free. Including non-PyTorch memory, this process has 94.72 GiB memory in use. Of the allocated memory 91.80 GiB is allocated by PyTorch, and 2.00 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:64 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:81 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:863 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:64 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:81 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:863 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:64 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:81 -> 3
+gp36:178253:181180 [1] NCCL INFO misc/socket.cc:863 -> 3
+gp36:178253:180924 [1] NCCL INFO misc/socket.cc:915 -> 3
+gp36:178253:181180 [1] NCCL INFO comm 0x8f29bd90 rank 1 nranks 4 cudaDev 1 busId 92000 - Abort COMPLETE
+gp36:178252:180456 [0] NCCL INFO [Service thread] Connection closed by localRank 1
+gp36:178254:180455 [2] NCCL INFO [Service thread] Connection closed by localRank 1
+[rank0]:[E612 01:22:46.043722879 ProcessGroupGloo.cpp:2524] [Rank 0]: Rank 1 failed to pass monitoredBarrier in 600000 ms
+[rank0]:[E612 01:22:46.043755676 ProcessGroupGloo.cpp:71] [Rank 0]: Ranks 1 failed to pass monitoredBarrier in 600000 ms
+W0612 01:22:46.247000 178102 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 178252 closing signal SIGTERM
+W0612 01:22:46.249000 178102 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 178254 closing signal SIGTERM
+gp36:178255:180922 [3] NCCL INFO [Service thread] Connection closed by localRank 0
+gp36:178255:180454 [3] NCCL INFO [Service thread] Connection closed by localRank 0
+[rank3]:[E612 01:22:46.167922352 ProcessGroupGloo.cpp:71] Rank 3 successfully reached monitoredBarrier, but received errors while waiting for send/recv from rank 0. Please check rank 0 logs for faulty rank.
+gp36:178255:180922 [3] NCCL INFO [Service thread] Connection closed by localRank 2
+gp36:178255:180454 [3] NCCL INFO [Service thread] Connection closed by localRank 2
+W0612 01:22:46.274000 178102 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 178255 closing signal SIGTERM
+E0612 01:22:46.766000 178102 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 1 (pid: 178253) of binary: /home/m-wu/miniconda3/envs/mimo_cuda13/bin/python3.12
 Traceback (most recent call last):
   File "/home/m-wu/miniconda3/envs/mimo_cuda13/bin/torchrun", line 6, in <module>
     sys.exit(main())
@@ -202,10 +1091,10 @@ Failures:
 ------------------------------------------------------------
 Root Cause (first observed failure):
 [0]:
-  time      : 2026-06-11_15:23:36
-  host      : gp37
-  rank      : 0 (local_rank: 0)
-  exitcode  : 1 (pid: 3664381)
+  time      : 2026-06-12_01:22:46
+  host      : gp36
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 178253)
   error_file: <N/A>
   traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
 ============================================================

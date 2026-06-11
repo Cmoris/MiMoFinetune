@@ -4,7 +4,7 @@ echo "=== MiMo-Audio Multi-GPU Training ==="
 
 
 # 1. Base environments
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 
 # 2. Distributed Training Config
 export MASTER_ADDR=localhost

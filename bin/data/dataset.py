@@ -614,6 +614,7 @@ if __name__ == "__main__":
             sostm_idx=sostm_idx,
             eostm_idx=eostm_idx,
             eot_idx=eot_idx,
+            speech_loss_weights="100-12-8-6-4-2-2-1-1"
         )
 
     model = MiMoAudioForCausalLM.from_pretrained(
@@ -658,4 +659,5 @@ if __name__ == "__main__":
     train_dataloader = DataLoader(train, batch_size=4, shuffle=False, collate_fn=collator)
 
     for batch in tqdm(train_dataloader):
+        breakpoint()
         pass

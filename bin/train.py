@@ -35,7 +35,7 @@ def rank0_print(*args):
         print(*args)
 
 
-def load_model_and_tokenizer(load_model_args, training_args, custom_args):
+def load_model_and_tokenizer(load_model_args, training_args, custom_args, model_load_kwargs=None):
     """
     Load model and tokenizer
     
@@ -48,6 +48,7 @@ def load_model_and_tokenizer(load_model_args, training_args, custom_args):
         mimo_audio_tokenizer: audio tokenizer
         mel_transform: Mel spectrogram transformer
     """
+    model_load_kwargs = model_load_kwargs or {}
     tokenizer: PreTrainedTokenizerFast = AutoTokenizer.from_pretrained(
         load_model_args.model_name_or_path
     )
@@ -101,6 +102,7 @@ def load_model_and_tokenizer(load_model_args, training_args, custom_args):
             args=model_args,
             torch_dtype=torch.bfloat16,
             device_map={"": training_args.device},
+            **model_load_kwargs
         )
         rank0_print(
             f"Model loaded, time: {time.monotonic() - start_loading_time:.2f} seconds, device: {training_args.device}"
@@ -171,7 +173,6 @@ def train(attn_implementation=None):
     )
     model_args, data_args, training_args, custom_args = parser.parse_args_into_dataclasses()
     
-    
     local_rank = training_args.local_rank
     rank0_print(f"本地 rank: {local_rank}")
     rank0_print(f"日志步数: {training_args.logging_steps}")
@@ -191,9 +192,6 @@ def train(attn_implementation=None):
         from transformers import BitsAndBytesConfig
         rank0_print(f"Using {custom_args.bits}-bit quantization")
         bnb_model_from_pretrained_args.update(dict(
-            device_map={"": training_args.device},
-            load_in_4bit=custom_args.bits == 4,
-            load_in_8bit=custom_args.bits == 8,
             quantization_config=BitsAndBytesConfig(
                 load_in_4bit=custom_args.bits == 4,
                 load_in_8bit=custom_args.bits == 8,
@@ -206,7 +204,7 @@ def train(attn_implementation=None):
         ))
 
     # Load model and tokenizer
-    model, tokenizer, mimo_audio_tokenizer, mel_transform = load_model_and_tokenizer(model_args, training_args, custom_args)
+    model, tokenizer, mimo_audio_tokenizer, mel_transform = load_model_and_tokenizer(model_args, training_args, custom_args, bnb_model_from_pretrained_args)
 
     model.tokenizer = tokenizer
     # Prepare quantization training
