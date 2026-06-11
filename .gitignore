@@ -4,4 +4,4 @@ MiMo-Audio
 MiMo-Audio-Training
 *.jsonl
 checkpoint
-log
+logs

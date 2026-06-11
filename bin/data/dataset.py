@@ -177,11 +177,11 @@ def build_conversation(
 class AudioDataSet(Dataset):
     def __init__(self, tokenizer, mimo_audio_tokenizer, mel_transform, path_item, data_args, model, lora_enable=False, ignore_index=-100):
         super(AudioDataSet, self).__init__()
-        tokenizer = tokenizer
-        mimo_audio_tokenizer = mimo_audio_tokenizer
-        mel_transform = mel_transform
-        path_item = path_item
-        data_args = data_args
+        self.tokenizer = tokenizer
+        self.mimo_audio_tokenizer = mimo_audio_tokenizer
+        self.mel_transform = mel_transform
+        self.path_item = path_item
+        self.data_args = data_args
         if lora_enable:
             self.model = model.model
         else:
@@ -220,11 +220,11 @@ class AudioDataSet(Dataset):
         return len(self.list_data_dict)
 
     def wav2mel(self, wav):
-        spec = mel_transform(wav[None, :])
+        spec = self.mel_transform(wav[None, :])
         return torch.log(torch.clip(spec, min=1e-7)).squeeze()
 
     def resample_audio_if_needed(self, wav_tensor: torch.Tensor, original_sr: int):
-        target_sr = mimo_audio_tokenizer.config.sampling_rate
+        target_sr = self.mimo_audio_tokenizer.config.sampling_rate
         if original_sr != target_sr:
             wav_tensor = torchaudio.functional.resample(
                 wav_tensor, original_sr, target_sr
@@ -261,14 +261,14 @@ class AudioDataSet(Dataset):
         return feature_groups, len_groups
 
     def encode_batch(self, input_features: torch.Tensor, input_lens: torch.Tensor, max_length: int = 256000):
-        input_features = input_features.to(device=mimo_audio_tokenizer.device, dtype=torch.bfloat16)
-        input_lens = input_lens.to(device=mimo_audio_tokenizer.device)
+        input_features = input_features.to(device=self.mimo_audio_tokenizer.device, dtype=torch.bfloat16)
+        input_lens = input_lens.to(device=self.mimo_audio_tokenizer.device)
         feature_groups, len_groups = self.group_by_length(input_features, input_lens, max_length)
         
         encoded_parts = []
         for features, lengths in zip(feature_groups, len_groups):
             with torch.no_grad():
-                codes, _ = mimo_audio_tokenizer.encoder.encode(
+                codes, _ = self.mimo_audio_tokenizer.encoder.encode(
                     input_features=features,
                     input_lens=lengths, 
                     return_codes_only=True
@@ -280,7 +280,7 @@ class AudioDataSet(Dataset):
     def get_input_ids(self, prompt):
         input_ids = [
             seg.to_input_id(
-                tokenizer, 
+                self.tokenizer, 
                 self.model.group_size, 
                 self.model.audio_channels,
             )

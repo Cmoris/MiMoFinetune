@@ -1,23 +1,25 @@
 only one gpu, set start method to spawn
-[INFO|training_args.py:2183] 2026-06-11 14:50:27,365 >> PyTorch: setting up devices
-[W611 14:50:27.119549374 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[INFO|training_args.py:2183] 2026-06-11 15:23:24,356 >> PyTorch: setting up devices
+Warning: The cache directory for DeepSpeed Triton autotune, /home/m-wu/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+[W611 15:23:26.644365111 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
 [Gloo] Rank 0 is connected to 0 peer ranks. Expected number of connected peer ranks is : 0
 本地 rank: 0
 日志步数: 1.0
 日志级别: info
 禁用tqdm: False
 Compute data type: torch.bfloat16
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
-[INFO|tokenization_utils_base.py:2050] 2026-06-11 14:50:27,793 >> loading file chat_template.jinja from cache at None
-[INFO|tokenization_utils_base.py:2313] 2026-06-11 14:50:28,023 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Using 4-bit quantization
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file vocab.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/vocab.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file merges.txt from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/merges.txt
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file tokenizer.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file added_tokens.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/added_tokens.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file special_tokens_map.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/special_tokens_map.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file tokenizer_config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/tokenizer_config.json
+[INFO|tokenization_utils_base.py:2050] 2026-06-11 15:23:27,392 >> loading file chat_template.jinja from cache at None
+[INFO|tokenization_utils_base.py:2313] 2026-06-11 15:23:27,620 >> Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
 开始从 XiaomiMiMo/MiMo-Audio-7B-Instruct 加载模型...
-[INFO|configuration_utils.py:699] 2026-06-11 14:50:28,926 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
-[INFO|configuration_utils.py:771] 2026-06-11 14:50:28,926 >> Model config Qwen2Config {
+[INFO|configuration_utils.py:699] 2026-06-11 15:23:28,525 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/config.json
+[INFO|configuration_utils.py:771] 2026-06-11 15:23:28,526 >> Model config Qwen2Config {
   "add_input_local_transformer": true,
   "add_speech_sosp_eosp": false,
   "architectures": [
@@ -67,20 +69,20 @@ Compute data type: torch.bfloat16
   "vocab_size": 151680
 }
 
-[INFO|modeling_utils.py:3982] 2026-06-11 14:50:28,927 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
-[INFO|modeling_utils.py:1633] 2026-06-11 14:50:28,939 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
-[INFO|configuration_utils.py:1140] 2026-06-11 14:50:28,941 >> Generate config GenerationConfig {}
+[INFO|modeling_utils.py:3982] 2026-06-11 15:23:28,526 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-7B-Instruct/snapshots/6fd52f6aa692f46f5091b12d538b18cf3cb0327c/model.safetensors.index.json
+[INFO|modeling_utils.py:1633] 2026-06-11 15:23:28,556 >> Instantiating MiMoAudioForCausalLM model under default dtype torch.bfloat16.
+[INFO|configuration_utils.py:1140] 2026-06-11 15:23:28,558 >> Generate config GenerationConfig {}
 
-Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.26it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.23it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.31it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.57it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.45it/s]
-[INFO|modeling_utils.py:4970] 2026-06-11 14:50:31,740 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:00<00:02,  1.19it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:01<00:01,  1.16it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:02<00:00,  1.23it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.46it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:02<00:00,  1.35it/s]
+[INFO|modeling_utils.py:4970] 2026-06-11 15:23:31,560 >> All model checkpoint weights were used when initializing MiMoAudioForCausalLM.
 
-[INFO|modeling_utils.py:4978] 2026-06-11 14:50:31,740 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
+[INFO|modeling_utils.py:4978] 2026-06-11 15:23:31,560 >> All the weights of MiMoAudioForCausalLM were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-7B-Instruct.
 If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioForCausalLM for predictions without further training.
-[INFO|modeling_utils.py:4366] 2026-06-11 14:50:31,965 >> Generation config file not found, using a generation config created from the model config.
-Model loaded, time: 3.48 seconds, device: cuda:0
+[INFO|modeling_utils.py:4366] 2026-06-11 15:23:31,777 >> Generation config file not found, using a generation config created from the model config.
+Model loaded, time: 3.70 seconds, device: cuda:0
 开始从 XiaomiMiMo/MiMo-Audio-Tokenizer ...
-[INFO|configuration_utils.py:699] 2026-06-11 14:50:32,414 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
-[INFO|configuration_utils.py:771] 2026-06-11 14:50:32,416 >> Model config MiMoAudioTokenizerConfig {
+[INFO|configuration_utils.py:699] 2026-06-11 15:23:32,280 >> loading configuration file config.json from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/config.json
+[INFO|configuration_utils.py:771] 2026-06-11 15:23:32,281 >> Model config MiMoAudioTokenizerConfig {
   "activation_function": "gelu",
   "avg_pooler": 2,
   "codebook_size": [
@@ -155,50 +157,26 @@ Model loaded, time: 3.48 seconds, device: cuda:0
   "window_size": 960
 }
 
-[INFO|modeling_utils.py:3982] 2026-06-11 14:50:32,416 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
-[INFO|modeling_utils.py:4970] 2026-06-11 14:50:34,141 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
+[INFO|modeling_utils.py:3982] 2026-06-11 15:23:32,281 >> loading weights file model.safetensors from cache at /home/m-wu/.cache/huggingface/hub/models--XiaomiMiMo--MiMo-Audio-Tokenizer/snapshots/c00d7b05062f6eda60890a03b9dfcb7da09b1d29/model.safetensors
+[INFO|modeling_utils.py:4970] 2026-06-11 15:23:33,998 >> All model checkpoint weights were used when initializing MiMoAudioTokenizer.
 
-[INFO|modeling_utils.py:4978] 2026-06-11 14:50:34,141 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
+[INFO|modeling_utils.py:4978] 2026-06-11 15:23:33,998 >> All the weights of MiMoAudioTokenizer were initialized from the model checkpoint at XiaomiMiMo/MiMo-Audio-Tokenizer.
 If your task is similar to the task the model of the checkpoint was trained on, you can already use MiMoAudioTokenizer for predictions without further training.
-Audio tokenizer loaded, time: 3.11 seconds, device: cuda:0
+Audio tokenizer loaded, time: 3.13 seconds, device: cuda:0
 Mel spectrogram transformer initialized
-Configuring LoRA adapter...
-LoRA target modules: ['q_proj', 'k_proj', 'v_proj', 'o_proj']
-Adding LoRA adapter...
-==================================================
-Trainable parameters statistics:
-  Trainable parameters: 72.88M
-  Total parameters: 8091.46M
-  Trainable ratio: 0.90%
-==================================================
-Preparing data module...
-06/11/2026 14:50:35 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl. Please ensure its last line stores the seek indices...
-06/11/2026 14:50:47 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl
-06/11/2026 14:50:47 - WARNING - data.dataset - Load /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl. Please ensure its last line stores the seek indices...
-06/11/2026 14:50:48 - WARNING - data.dataset - Successfully loaded /home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/dev.jsonl
-Initializing Trainer...
-Warning: The cache directory for DeepSpeed Triton autotune, /home/m-wu/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Preparing quantization training model...
 [rank0]: Traceback (most recent call last):
 [rank0]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 373, in <module>
 [rank0]:     train()
-[rank0]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 304, in train
-[rank0]:     trainer = MiMoAudioTrainer(
-[rank0]:               ^^^^^^^^^^^^^^^^^
-[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/utils/deprecation.py", line 172, in wrapped_func
-[rank0]:     return func(*args, **kwargs)
-[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
-[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer.py", line 677, in __init__
-[rank0]:     self.callback_handler = CallbackHandler(
-[rank0]:                             ^^^^^^^^^^^^^^^^
-[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer_callback.py", line 450, in __init__
-[rank0]:     self.add_callback(cb)
-[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/trainer_callback.py", line 467, in add_callback
-[rank0]:     cb = callback() if isinstance(callback, type) else callback
-[rank0]:          ^^^^^^^^^^
-[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/transformers/integrations/integration_utils.py", line 644, in __init__
-[rank0]:     raise RuntimeError(
-[rank0]: RuntimeError: TensorBoardCallback requires tensorboard to be installed. Either update your PyTorch version or install tensorboardX.
-E0611 14:51:04.137000 3652068 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 3652128) of binary: /home/m-wu/miniconda3/envs/mimo_cuda13/bin/python3.12
+[rank0]:   File "/home/m-wu/proj/MiMo/bin/train.py", line 220, in train
+[rank0]:     model = prepare_model_for_kbit_training(
+[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/m-wu/miniconda3/envs/mimo_cuda13/lib/python3.12/site-packages/peft/utils/other.py", line 186, in prepare_model_for_kbit_training
+[rank0]:     param.data = param.data.to(torch.float32)
+[rank0]:                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 172.00 MiB. GPU 0 has a total capacity of 31.36 GiB of which 79.69 MiB is free. Including non-PyTorch memory, this process has 31.27 GiB memory in use. Of the allocated memory 29.50 GiB is allocated by PyTorch, and 1.18 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[rank0]:[W611 15:23:36.066654702 ProcessGroupNCCL.cpp:1538] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E0611 15:23:36.984000 3664367 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 3664381) of binary: /home/m-wu/miniconda3/envs/mimo_cuda13/bin/python3.12
 Traceback (most recent call last):
   File "/home/m-wu/miniconda3/envs/mimo_cuda13/bin/torchrun", line 6, in <module>
     sys.exit(main())
@@ -224,10 +202,10 @@ Failures:
 ------------------------------------------------------------
 Root Cause (first observed failure):
 [0]:
-  time      : 2026-06-11_14:51:04
+  time      : 2026-06-11_15:23:36
   host      : gp37
   rank      : 0 (local_rank: 0)
-  exitcode  : 1 (pid: 3652128)
+  exitcode  : 1 (pid: 3664381)
   error_file: <N/A>
   traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
 ============================================================

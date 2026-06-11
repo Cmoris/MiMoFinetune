@@ -8,7 +8,7 @@ export CUDA_VISIBLE_DEVICES=0
 
 # 2. Distributed Training Config
 export MASTER_ADDR=localhost
-export MASTER_PORT=29501
+export MASTER_PORT=29500
 export OMP_NUM_THREADS=1
 
 # NCCL Config
@@ -23,7 +23,7 @@ export NCCL_NET=Socket
 export NCCL_P2P_DISABLE=1
 export NCCL_P2P_LEVEL=0
 
-export NCCL_SOCKET_IFNAME=eth0
+export NCCL_SOCKET_IFNAME=lo
 
 export NCCL_ASYNC_ERROR_HANDLING=1
 export NCCL_TIMEOUT=3600
@@ -56,14 +56,15 @@ torchrun \
     --nproc_per_node=$NUM_GPUS \
     --master_port=$MASTER_PORT \
     train.py \
+    --deepspeed scripts/zero2.json \
     --model_name_or_path $MODEL_PATH \
     --speech_tokenizer_name_or_path $SPEECH_TOKENIZER_PATH \
     --data_path $DATA_PATH \
     --validate_path $VALID_PATH \
     --output_dir $OUTPUT_DIR \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 16 \
-    --gradient_accumulation_steps 2 \
+    --per_device_train_batch_size 1 \
+    --per_device_eval_batch_size 1 \
+    --gradient_accumulation_steps 1 \
     --num_train_epochs 1 \
     --learning_rate 2e-5 \
     --weight_decay 0.01 \
@@ -74,6 +75,7 @@ torchrun \
     --eval_steps 1000 \
     --save_total_limit 3 \
     --eval_strategy "steps" \
+    --bits 4 \
     --bf16 True \
     --gradient_checkpointing False \
     --dataloader_num_workers 0 \
