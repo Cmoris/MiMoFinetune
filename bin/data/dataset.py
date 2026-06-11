@@ -2,6 +2,7 @@ import re
 import os
 import json
 import numpy as np
+from dataclasses import dataclass
 from typing import Union, Optional, Any, List, Dict
 
 import torch
@@ -9,9 +10,11 @@ import torchaudio
 from torch.utils.data import Dataset
 from torchcodec.decoders import AudioDecoder
 
+import transformers
 from transformers import logging
 
-from model.mimo_audio.process_speechdata import InputSegment
+from model.mimo_audio.process_speechdata import InputSegment, StreamingInputSegment
+
 
 logger = logging.get_logger(__name__)
 
@@ -65,32 +68,7 @@ def build_conversation(
     conversation: List[Dict[str, Any]],
     strip_text: bool = True,
 ) -> List[Dict[str, str]]:
-    """
-    Convert one Qwen2Audio-style single-turn conversation to MiMo-style message.
 
-    Input example:
-    [
-        {
-            "role": "user",
-            "content": [
-                {"type": "text", "text": "Transcribe the audio"},
-                {"type": "audio", "audio": "...wav", "start": 0.0, "end": 2.344}
-            ]
-        },
-        {
-            "role": "assistant",
-            "content": [
-                {"type": "text", "text": "保费 您 是 帐户 扣 的 还是 刷卡 缴费 "}
-            ]
-        }
-    ]
-
-    Output:
-    [
-        {"role": "user", "content": "...wav"},
-        {"role": "assistant", "content": "保费 您 是 帐户 扣 的 还是 刷卡 缴费"}
-    ]
-    """
     user_audio_path = None
     assistant_text = None
 
@@ -140,33 +118,98 @@ def build_conversation(
         },
     ]
 
-class MiMoStreamingDataset(Dataset):
-    def __init__(
-                self,
-                annotation_paths: list[str]
-            ):
-        super().__init__()
-        self.handles: list[tuple[str, int]] = []
-        for ap in annotation_paths:
-            ap = str(ap)
-            if ap.endswith(".jsonl"):
-                # last line stores seek indices
-                seeks = json.loads(_read_last_line(ap))
-                self.handles.extend([(ap, sk) for sk in seeks])
-                # logger.warning(f"Loaded {ap} ({len(seeks)} samples)")
-            elif ap.endswith(".json"):
-                # single-record JSON; seek=0 sentinel handled in load_record
-                self.handles.append((ap, -1))
-                logger.warning(f"Loaded single-record {ap}")
-            else:
-                raise ValueError(f"Unsupported annotation format: {ap}")
-            
-        self.group_size=self.model.config.group_size
-        self.audio_channels=self.model.config.audio_channels
-        self.delay_pattern = self.model.config.delay_pattern
-        self.vocab_size = self.model.config.vocab_size
-
+class AudioDataSet(Dataset):
+    def __init__(self, tokenizer, mimo_audio_tokenizer, mel_transform, path_item, data_args, model, lora_enable=False, ignore_index=-100):
+        super(AudioDataSet, self).__init__()
+        self.tokenizer = tokenizer
+        self.mimo_audio_tokenizer = mimo_audio_tokenizer
+        self.mel_transform = mel_transform
+        self.path_item = path_item
+        self.data_args = data_args
+        if lora_enable:
+            self.model = model.model
+        else:
+            self.model = model
         self.speech_zeroemb_idx = self.model.speech_empty_ids
+        self.ignore_index = ignore_index
+        if path_item == 'train':
+            list_data_dict = json.load(open(data_args.data_path, "r"))
+        else:
+            list_data_dict = json.load(open(data_args.validate_path, "r"))
+        self.list_data_dict = list_data_dict
+
+    def __len__(self):
+        return len(self.list_data_dict)
+
+    def wav2mel(self, wav):
+        spec = self.mel_transform(wav[None, :])
+        return torch.log(torch.clip(spec, min=1e-7)).squeeze()
+
+    def resample_audio_if_needed(self, wav_tensor: torch.Tensor, original_sr: int):
+        target_sr = self.mimo_audio_tokenizer.config.sampling_rate
+        if original_sr != target_sr:
+            wav_tensor = torchaudio.functional.resample(
+                wav_tensor, original_sr, target_sr
+            )
+        return wav_tensor
+
+    def group_by_length(self, features: torch.Tensor, lengths: torch.Tensor, max_length: int):
+        if features.size(0) != lengths.sum().item():
+            raise ValueError(f"Feature size mismatch: {features.size(0)} vs {lengths.sum().item()}")
+        
+        split_points = []
+        current_sum = 0
+        
+        for i, seq_len in enumerate(lengths):
+            if current_sum + seq_len > max_length and current_sum > 0:
+                split_points.append(i)
+                current_sum = seq_len.item()
+            else:
+                current_sum += seq_len.item()
+        
+        # Convert split points to group sizes
+        group_sizes = []
+        prev = 0
+        for point in split_points:
+            group_sizes.append(point - prev)
+            prev = point
+        if prev < len(lengths):
+            group_sizes.append(len(lengths) - prev)
+        
+        len_groups = torch.split(lengths, group_sizes)
+        feature_sizes = [group.sum().item() for group in len_groups]
+        feature_groups = torch.split(features, feature_sizes)
+        
+        return feature_groups, len_groups
+
+    def encode_batch(self, input_features: torch.Tensor, input_lens: torch.Tensor, max_length: int = 256000):
+        input_features = input_features.to(device=self.mimo_audio_tokenizer.device, dtype=torch.bfloat16)
+        input_lens = input_lens.to(device=self.mimo_audio_tokenizer.device)
+        feature_groups, len_groups = self.group_by_length(input_features, input_lens, max_length)
+        
+        encoded_parts = []
+        for features, lengths in zip(feature_groups, len_groups):
+            with torch.no_grad():
+                codes, _ = self.mimo_audio_tokenizer.encoder.encode(
+                    input_features=features,
+                    input_lens=lengths, 
+                    return_codes_only=True
+                )
+                encoded_parts.append(codes)
+        
+        return torch.cat(encoded_parts, dim=-1).cpu()
+
+    def get_input_ids(self, prompt):
+        input_ids = [
+            seg.to_input_id(
+                self.tokenizer, 
+                self.model.group_size, 
+                self.model.audio_channels,
+            )
+            for seg in prompt
+        ]
+        input_ids = torch.cat(input_ids, dim=1)
+        return input_ids
 
     def preprocess_input(
         self,
@@ -180,28 +223,29 @@ class MiMoStreamingDataset(Dataset):
                 if wav.ndim == 2:
                     wav = wav.mean(dim=0)
                 wav = self.resample_audio_if_needed(wav, sr)
-            wav = wav.to(self.device)
+            wav = wav
             
             mel = self.wav2mel(wav).transpose(0, 1)  # (seq_len, n_mels)
+            mel = mel
 
             input_len = mel.size(0)
-            segment_size = 6000
+            segment_size = 3000
             input_len_seg = [segment_size] * (input_len // segment_size)
             if input_len % segment_size > 0:
                 input_len_seg.append(input_len % segment_size)
 
             codes_packed = self.encode_batch(
                 input_features=mel, 
-                input_lens=torch.tensor(input_len_seg),
+                input_lens=torch.tensor(input_len_seg)
             )
             
             codes = codes_packed.transpose(0, 1).detach().cpu()
-            audio_codes = codes[:, :self.audio_channels]
+            audio_codes = codes[:, :self.model.audio_channels]
 
             # Pad the sequence to be a multiple of group_size by repeating the last frame
             num_timesteps = audio_codes.shape[0]
-            if num_timesteps % self.group_size != 0:
-                padding_needed = self.group_size - (num_timesteps % self.group_size)
+            if num_timesteps % self.model.config.group_size != 0:
+                padding_needed = self.model.config.group_size - (num_timesteps % self.model.config.group_size)
                 last_tokens = audio_codes[-1:, :] # Keep dim for repeat
                 padding_tokens = last_tokens.repeat(padding_needed, 1)
                 audio_codes = torch.cat([audio_codes, padding_tokens], dim=0)
@@ -217,95 +261,215 @@ class MiMoStreamingDataset(Dataset):
                 text = text.capitalize()
             return text
 
-    def get_s2t_dialogue_sft_multiturn_prompt(self, message_list, thinking=False):
-        lm_prompt = []
-        for i in range(len(message_list)):
-            if message_list[i]['role'] == 'user':
-                lm_prompt += [
-                    InputSegment(
-                        text=f"<|im_start|>user\n",
-                        speech_zeroemb_idx=self.speech_zeroemb_idx,
-                        text_zeroemb_idx=self.empty_token,
-                    ),
-                    InputSegment(
-                        audio=self.preprocess_input(message_list[i]['content']),
-                        speech_zeroemb_idx=self.speech_zeroemb_idx,
-                        text_zeroemb_idx=self.empty_token,
-                    ),
-                    InputSegment(
-                        text=f"<|im_end|>\n",
-                        speech_zeroemb_idx=self.speech_zeroemb_idx,
-                        text_zeroemb_idx=self.empty_token,
-                    )
-                ]
-            elif message_list[i]['role'] == 'assistant':
-                lm_prompt += [
-                    InputSegment(
-                        text=f"<|im_start|>assistant\n",
-                        speech_zeroemb_idx=self.speech_zeroemb_idx,
-                        text_zeroemb_idx=self.empty_token,
-                    ),
-                    InputSegment(
-                        text=message_list[i]['content'],
-                        speech_zeroemb_idx=self.speech_zeroemb_idx,
-                        text_zeroemb_idx=self.empty_token,
-                    ),
-                    InputSegment(
-                        text=f"<|im_end|>\n",
-                        speech_zeroemb_idx=self.speech_zeroemb_idx,
-                        text_zeroemb_idx=self.empty_token,
-                    )
-                ]
-            else:
-                raise ValueError(f"Invalid role: {message_list[i]['role']}")
-        
-        lm_prompt.append(
-            InputSegment(
-                text=f"<|im_start|>assistant\n",
-                speech_zeroemb_idx=self.speech_zeroemb_idx,
-                text_zeroemb_idx=self.empty_token,
-            )
-        )
-        if not thinking:
-            lm_prompt.append(
-                InputSegment(
-                    text="<think>\n\n</think>\n",
-                    speech_zeroemb_idx=self.speech_zeroemb_idx,
-                    text_zeroemb_idx=self.empty_token,
-                )
-            )
-        else:
-            lm_prompt.append(
-                InputSegment(
-                    text="<think>\n",
-                    speech_zeroemb_idx=self.speech_zeroemb_idx,
-                    text_zeroemb_idx=self.empty_token,
-                )
-            )
-        input_ids = self.get_input_ids(lm_prompt)
-        return input_ids
-    
-    def load_record(self, index: int) -> dict:
-        path, seek = self.handles[index]
-        if seek == -1:                          # single .json file
-            with open(path, encoding="utf-8") as f:
-                return json.load(f)
-        with open(path, encoding="utf-8") as f:
-            f.seek(seek)
-            return json.loads(f.readline())
-    
-    def getitem(self, index:int):
-        record = self.load_record(index)
-        conversation = build_conversation(record)
-        return record
+    def __getitem__(self, i) -> Dict[str, torch.Tensor]:
+        sample = self.list_data_dict[i]
 
-    def __getitem__(self, index):
-        return self.getitem(index)
+        input_segments = []
+        labels_with_loss_segments = [[0]]
+        for item in sample:
+            if item['role'] == 'system':
+                input_segments.append(InputSegment(
+                    text="<|im_start|>system\n",
+                    speech_zeroemb_idx=self.speech_zeroemb_idx,
+                    text_zeroemb_idx=self.model.args.empty_idx,
+                ))
+                for content_item in item['content']:
+                    if content_item['type'] == 'text':
+                        input_segments.append(InputSegment(
+                            text=content_item['text'],
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        ))
+                    elif content_item['type'] == 'audio':
+                        speech_tokens = self.preprocess_input(content_item['audio'])
+                        input_segments.append(InputSegment(
+                            text="",
+                            audio=speech_tokens,
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        ))
+                input_segments.append(
+                    InputSegment(
+                        text="<|im_end|>\n",
+                        speech_zeroemb_idx=self.speech_zeroemb_idx,
+                        text_zeroemb_idx=self.model.args.empty_idx,
+                    )
+                )
+            elif item['role'] == 'user':
+                input_segments.append(InputSegment(
+                    text="<|im_start|>user\n",
+                    speech_zeroemb_idx=self.speech_zeroemb_idx,
+                    text_zeroemb_idx=self.model.args.empty_idx,
+                ))
+                for content_item in item['content']:
+                    if content_item['type'] == 'text':
+                        input_segments.append(InputSegment(
+                            text=content_item['text'],
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        ))
+                    elif content_item['type'] == 'audio':
+                        speech_tokens = self.preprocess_input(content_item['audio'])
+                        input_segments.append(InputSegment(
+                            text="",
+                            audio=speech_tokens,
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        ))
+                input_segments.append(
+                    InputSegment(
+                        text="<|im_end|>\n",
+                        speech_zeroemb_idx=self.speech_zeroemb_idx,
+                        text_zeroemb_idx=self.model.args.empty_idx,
+                    )
+                )
+            elif item['role'] == 'assistant':
+                input_segments.append(InputSegment(
+                    text="<|im_start|>assistant\n",
+                    speech_zeroemb_idx=self.speech_zeroemb_idx,
+                    text_zeroemb_idx=self.model.args.empty_idx,
+                ))
+                if item['thinking']:
+                    input_segments.append(
+                        InputSegment(
+                            text="<think>\n",
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        )
+                    )
+                    current_input_length = self.get_input_ids(input_segments).size(-1)
+                    labels_with_loss_segments[-1].append(current_input_length)
+                    input_segments.append(
+                        InputSegment(
+                            text=item['Chain-of-thought'],
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        ),
+                        InputSegment(
+                            text="</think>\n",
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        )
+                    )
+                elif item['thinking'] == False:
+                    input_segments.append(
+                        InputSegment(
+                            text="<think>\n\n</think>\n",
+                            speech_zeroemb_idx=self.speech_zeroemb_idx,
+                            text_zeroemb_idx=self.model.args.empty_idx,
+                        )
+                    )
+                    current_input_length = self.get_input_ids(input_segments).size(-1)
+                    labels_with_loss_segments[-1].append(current_input_length)
+                elif item['thinking'] == None:
+                    current_input_length = self.get_input_ids(input_segments).size(-1)
+                    labels_with_loss_segments[-1].append(current_input_length)
+
+                if 'audio' in item['content'][-1]:
+                    speech_tokens = self.preprocess_input(item['content'][-1]['audio'])
+                    input_segments.append(StreamingInputSegment(
+                        text=item['content'][-2]['text'],
+                        audio=speech_tokens,
+                        speech_zeroemb_idx=self.speech_zeroemb_idx,
+                        text_zeroemb_idx=self.model.args.empty_idx,
+                        tokenizer=self.model.tokenizer,
+                        group_size=self.model.group_size,
+                        audio_channels=self.model.audio_channels,
+                    ))
+                else:
+                    input_segments.append(InputSegment(
+                        text=item['content'][0]['text'],
+                        speech_zeroemb_idx=self.speech_zeroemb_idx,
+                        text_zeroemb_idx=self.model.args.empty_idx,
+                    ))
+                input_segments.append(
+                    InputSegment(
+                        text="<|im_end|>\n",
+                        speech_zeroemb_idx=self.speech_zeroemb_idx,
+                        text_zeroemb_idx=self.model.args.empty_idx,
+                    )
+                )
+                labels_with_loss_segments.append([self.get_input_ids(input_segments).size(-1)])
+        
+        input_ids = self.get_input_ids(input_segments)
+        labels = input_ids.clone()
+        
+        for i in range(len(labels_with_loss_segments[:-1])):
+            labels[:, labels_with_loss_segments[i][0]:labels_with_loss_segments[i][1]] = self.ignore_index
+
+        attention_mask = torch.ones(input_ids.shape[-1] // self.model.group_size).int()
+        return dict(
+            input_ids=input_ids.transpose(0, 1),
+            labels=labels.transpose(0, 1),
+            attention_mask=attention_mask,
+        )
+
+@dataclass
+class DataCollatorLLMsTraining(object):
+    """Collate examples for supervised fine-tuning."""
+
+    tokenizer: transformers.PreTrainedTokenizer
+    ignore_index: int
+    model: torch.nn.Module
+
+    def __call__(self, instances, return_tensors="pt"):
+        input_ids, attention_mask, labels = tuple([instance[key] for instance in instances]
+                                  for key in ("input_ids", "attention_mask", "labels"))
+        input_ids = torch.nn.utils.rnn.pad_sequence(
+            input_ids,
+            batch_first=True,
+            padding_value=0)
+        attention_mask = torch.nn.utils.rnn.pad_sequence(
+            attention_mask,
+            batch_first=True,
+            padding_value=0)
+        labels = torch.nn.utils.rnn.pad_sequence(
+            labels,
+            batch_first=True,
+            padding_value=self.ignore_index)
+        
+        batch = dict(
+            input_ids=input_ids.transpose(1, 2),
+            attention_mask=attention_mask,
+            labels=labels.transpose(1, 2),
+        )
+        return batch
+
     
-    def __len__(self):
-        return len(self.handles)
+def make_dialogue_module(tokenizer,
+                        mimo_audio_tokenizer,
+                        mel_transform,
+                        data_args,
+                        model,
+                        lora_enable) -> Dict:
+    """Make dataset and collator for supervised fine-tuning."""
+    if data_args.data_path is not None:
+        train_dataset = AudioDataSet(tokenizer=tokenizer,
+                                mimo_audio_tokenizer=mimo_audio_tokenizer,
+                                mel_transform=mel_transform,
+                                path_item='train',
+                                data_args=data_args,
+                                model=model,
+                                lora_enable=lora_enable
+                                )
+    else:
+        raise ValueError("data_args.data_path is None")
     
-if __name__ == "__main__":
-    path = ["/home/m-wu/proj/MiMo/bin/dataprocessing/jsonl_data/train.jsonl"]
-    dataset = MiMoStreamingDataset(annotation_paths=path)
+    if data_args.validate_path is not None:
+        validate_dataset = AudioDataSet(tokenizer=tokenizer,
+                                mimo_audio_tokenizer=mimo_audio_tokenizer,
+                                mel_transform=mel_transform,
+                                path_item='validate',
+                                data_args=data_args,
+                                model=model,
+                                lora_enable=lora_enable
+                            )
+    else:
+        validate_dataset = None
     
+    data_collator = DataCollatorLLMsTraining(tokenizer=tokenizer,
+                                             model=model,
+                                             ignore_index=-100)
+    return dict(train_dataset=train_dataset,
+                eval_dataset=validate_dataset,
+                data_collator=data_collator)

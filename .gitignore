@@ -1,4 +1,5 @@
 .vscode
 __pycache__
 MiMo-Audio
+MiMo-Audio-Training
 *.jsonl
