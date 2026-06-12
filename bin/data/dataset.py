@@ -1,7 +1,9 @@
 import re
 import os
 import json
+import random
 import numpy as np
+import soundfile as sf
 from dataclasses import dataclass, field
 from typing import Union, Optional, Any, List, Dict, Tuple
 
@@ -48,8 +50,8 @@ def read_audio(ele: dict) -> Tuple[torch.Tensor, torch.Tensor, int]:
     total_source_frames = info.num_frames
     audio_duration = total_source_frames / audio_sr
 
-    audio_start = ele.get("audio_start")
-    audio_end = ele.get("audio_end")
+    audio_start = ele.get("start")
+    audio_end = ele.get("end")
 
     # 注意：不能用 `if not audio_start`，因为 0.0 是合法值
     if audio_start is None:
@@ -263,6 +265,7 @@ class AudioDataSet(Dataset):
     def encode_batch(self, input_features: torch.Tensor, input_lens: torch.Tensor, max_length: int = 256000):
         input_features = input_features.to(device=self.mimo_audio_tokenizer.device, dtype=torch.bfloat16)
         input_lens = input_lens.to(device=self.mimo_audio_tokenizer.device)
+        
         feature_groups, len_groups = self.group_by_length(input_features, input_lens, max_length)
         
         encoded_parts = []
@@ -303,9 +306,9 @@ class AudioDataSet(Dataset):
                 # if wav.ndim == 2:
                 #     wav = wav.mean(dim=0)
                 # wav = self.resample_audio_if_needed(wav, sr)
-                wav, _, _ = read_audio(input)
-                
+                wav, _, sr = read_audio(input)
             
+            # sf.write("./debug.wav", wav.numpy(), samplerate=sr)
             mel = self.wav2mel(wav).transpose(0, 1)  # (seq_len, n_mels)
 
             input_len = mel.size(0)
@@ -313,7 +316,7 @@ class AudioDataSet(Dataset):
             input_len_seg = [segment_size] * (input_len // segment_size)
             if input_len % segment_size > 0:
                 input_len_seg.append(input_len % segment_size)
-
+            
             codes_packed = self.encode_batch(
                 input_features=mel, 
                 input_lens=torch.tensor(input_len_seg)
@@ -341,7 +344,7 @@ class AudioDataSet(Dataset):
                 text = text.capitalize()
             return text
 
-    def __getitem__(self, i) -> Dict[str, torch.Tensor]:
+    def getitem(self, i) -> Dict[str, torch.Tensor]:
         sample = self.load_conversation(i)
 
         input_segments = []
@@ -484,6 +487,16 @@ class AudioDataSet(Dataset):
             labels=labels.transpose(0, 1),
             attention_mask=attention_mask,
         )
+    def __getitem__(self, index):
+        max_tries = 100
+        for _ in range(max_tries):
+            try:
+                return self.getitem(index)
+            except Exception as e:
+                logger.warning(f"Failed {_}-th try to get item {index}: {e}")
+                index = random.randint(0, self.__len__() - 1)
+                logger.warning(f"Retrying to get item {index}")
+        raise Exception(f"Failed to get item after {max_tries} retries")
 
 @dataclass
 class DataCollatorLLMsTraining(object):
@@ -557,6 +570,8 @@ def make_dialogue_module(tokenizer,
                 data_collator=data_collator)
 
 if __name__ == "__main__":
+    import logging
+    from pathlib import Path
     from tqdm import tqdm
     from torch.utils.data import DataLoader
     from model.mimo_audio.modeling_mimo_audio import (
@@ -572,6 +587,37 @@ if __name__ == "__main__":
     )
     from torchaudio.transforms import MelSpectrogram
     from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
+
+    def setup_logger(log_file: str) -> logging.Logger:
+        Path(log_file).parent.mkdir(parents=True, exist_ok=True)
+
+        logger = logging.getLogger("train")
+        logger.setLevel(logging.INFO)
+        logger.propagate = False
+
+        # 避免重复调用时重复添加 handler
+        if logger.handlers:
+            logger.handlers.clear()
+
+        formatter = logging.Formatter(
+            fmt="%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+
+        # 输出到文件
+        file_handler = logging.FileHandler(
+            log_file,
+            mode="a",
+            encoding="utf-8",
+        )
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(formatter)
+
+        logger.addHandler(file_handler)
+
+        return logger
+    
+    logger = setup_logger("debug.log")
 
     model_path = "XiaomiMiMo/MiMo-Audio-7B-Instruct"
     tokenizer_path = "XiaomiMiMo/MiMo-Audio-Tokenizer"
@@ -659,5 +705,5 @@ if __name__ == "__main__":
     train_dataloader = DataLoader(train, batch_size=4, shuffle=False, collate_fn=collator)
 
     for batch in tqdm(train_dataloader):
-        breakpoint()
-        pass
+        logger.info(f"input_ids size: {batch["input_ids"].size()}")
+        logger.info(f"labels size: {batch["labels"].size()}")

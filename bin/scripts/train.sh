@@ -4,7 +4,7 @@ echo "=== MiMo-Audio Multi-GPU Training ==="
 
 
 # 1. Base environments
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+export CUDA_VISIBLE_DEVICES=0,1
 
 # 2. Distributed Training Config
 export MASTER_ADDR=localhost
@@ -62,10 +62,10 @@ torchrun \
     --data_path $DATA_PATH \
     --validate_path $VALID_PATH \
     --output_dir $OUTPUT_DIR \
-    --per_device_train_batch_size 1 \
-    --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 1 \
-    --num_train_epochs 1 \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 4 \
+    --num_train_epochs 4 \
     --learning_rate 2e-5 \
     --weight_decay 0.01 \
     --warmup_ratio 0.03 \

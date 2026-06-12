@@ -3,5 +3,6 @@ __pycache__
 MiMo-Audio
 MiMo-Audio-Training
 *.jsonl
-checkpoint
+checkpoints
 logs
+*.log
